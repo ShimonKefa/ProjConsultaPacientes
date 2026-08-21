@@ -1,4 +1,4 @@
-namespace ProjConsulta.Enums
+namespace ProjConsulta.Entities.Enums
 {
     public enum GenderEnum
     {

@@ -1,4 +1,4 @@
-using ProjConsulta.Enums;
+using ProjConsulta.Entities.Enums;
 namespace ProjConsulta.Entities
 {
     public class Client
