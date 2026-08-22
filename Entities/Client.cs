@@ -8,6 +8,7 @@ namespace ProjConsulta.Entities
         public int Age {get; set;}
         public GenderEnum gender{get; set;}
         public string? Email{ get; set;}
+        
         public Client(){ }
         public Client(Guid id, string? name, int age, GenderEnum gender, string? email)
         {

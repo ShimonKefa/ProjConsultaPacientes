@@ -10,15 +10,25 @@ namespace ProjConsulta.Services
         public ClientService(DBCOM context)
         {
             _context = context;
-        }
+        }   
         public Client InsertClient(Client client)
         {
-            using var context = new DBCOM();
-            context.Database.EnsureCreated();
-            context.clients.Add(client);
-            context.SaveChanges();
+            _context.Database.EnsureCreated();
+            _context.clients.Add(client);
+            _context.SaveChanges();
             return client;   
         }
+        
+        public List<Client> ShowClients(Client client)
+        {
+            return _context.clients.ToList();
+        }
+
+        public Client ShowClientbyID(Guid id)
+        {
+            return _context.clients.FirstOrDefault(c => c.ID == id);
+        }
+
         
     }
 }
