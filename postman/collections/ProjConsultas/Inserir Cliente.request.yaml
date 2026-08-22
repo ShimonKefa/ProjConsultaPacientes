@@ -1,0 +1,18 @@
+$kind: http-request
+name: Inserir Cliente
+url: http://localhost:5096/API/Client
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"Pedro\",\r
+
+    \    \"Age\": 20,\r
+
+    \    \"Gender\": \"MALE\",\r
+
+    \    \"Email\": \"pedromanzolioliveira@gmail.com\"\r
+
+    }"
+order: 1787409648192

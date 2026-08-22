@@ -11,7 +11,7 @@ namespace ProjConsulta.Data
         {
             EnvironmentService enviroment = new EnvironmentService();
             enviroment.EnsureCreated();
-            Context = $"Data Source{enviroment.DBFilePath}";
+            Context = $"Data Source={enviroment.DBFilePath}";
         }
         public DbSet<Client> clients { get; set; }
         public DbSet<Doctors> doctors { get; set; }
