@@ -18,7 +18,7 @@ namespace ProjConsulta.Data
         //criação das tabelas no arquivo do SQL
         public DbSet<Client> clients { get; set; }
         public DbSet<Doctors> doctors { get; set; }
-        public DbSet<Scheduling> schedulings { get; set; }
+        public DbSet<Schedules> schedules { get; set; }
         
         //definição do SGBD no caso o Sqlite
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

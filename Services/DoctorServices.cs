@@ -26,6 +26,7 @@ namespace ProjConsulta.Services
         public Doctors ShowDoctorID(Guid id)
         {
             return _context.doctors.FirstOrDefault(c => c.ID == id);
+            
         }
     }
 }

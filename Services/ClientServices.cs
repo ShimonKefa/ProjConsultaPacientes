@@ -56,8 +56,6 @@ namespace ProjConsulta.Services
                     Email = c.Email,
                 })
                 .FirstOrDefault();
-
-            //_context.clients.FirstOrDefault(c => c.ID == id);
         }
     }
 }
