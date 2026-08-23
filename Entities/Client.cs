@@ -7,6 +7,7 @@ namespace ProjConsulta.Entities
         public string? Name { get; set; }
         public int Age {get; set;}
         public GenderEnum gender{get; set;}
+        //Precisa ter o Email para atender a necessidade do comando do bessa de enviar os emails, vou trabalhar nisso depois
         public string? Email{ get; set;}
         
         public Client(){ }

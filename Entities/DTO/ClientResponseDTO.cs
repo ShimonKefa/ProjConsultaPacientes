@@ -1,6 +1,7 @@
 using ProjConsulta.Entities.Enums;
 namespace ProjConsulta.Entities.DTO
 {
+    //DTO para consulta do cliente
     public class ClientResponseDTO
     {
         public Guid ID { get; set; }

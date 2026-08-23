@@ -1,6 +1,7 @@
 using ProjConsulta.Entities.Enums;
 namespace ProjConsulta.Entities.DTO
 {
+    //DTO para inserir o cliente
     public class ClientCreateDTO
     {
         public string? Name { get; set; }

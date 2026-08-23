@@ -9,14 +9,17 @@ using ProjConsulta.Services;
 
 namespace ProjConsulta.Controllers
 {
+    //Rota que a api vai consumir : Localhost xxxx/API/"Endpoint que eu preciso"
     [Route("API/[Controller]")]
     [ApiController]
     public class ClientController : ControllerBase
     {
+        //Objeto que acessa os serviços direcionados aos clientes
         private readonly ClientService _client;
 
         public ClientController(ClientService client)
         {
+            //recebe o Objeto da classe serviço e armazena na classe privada vista
             _client = client;
         }
 
@@ -32,6 +35,7 @@ namespace ProjConsulta.Controllers
             return Ok(client);
         }
 
+        //lista o cliente pelo ID, na hora de consultar um ID único o sistema deve procurar pelo ID.
         [HttpGet("{ID}/GetClientByID")]
         public IActionResult GetClientByID(Guid ID)
         {
@@ -44,6 +48,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
+        //Insere o cliente no banco, insert Simples
         public IActionResult InsertClient([FromBody] ClientCreateDTO clientcreateDTO)
         {
             if (!ModelState.IsValid)

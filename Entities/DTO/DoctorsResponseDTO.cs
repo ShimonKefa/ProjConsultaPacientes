@@ -3,6 +3,7 @@ namespace ProjConsulta.Entities.DTO
 {
     public class DoctorsResponseDTO
     {
+        public Guid ID { get; set; } = Guid.NewGuid();
         public string? Name { get; set; }
         public int Age { get; set; }
         public GenderEnum gender { get; set; }
