@@ -18,7 +18,6 @@ namespace ProjConsulta.Services
         {
             Doctors doctors = new Doctors
             {
-                ID = doctorCreateDTO.ID,
                 Name = doctorCreateDTO.Name,
                 Age = doctorCreateDTO.Age,
                 gender = doctorCreateDTO.gender,
