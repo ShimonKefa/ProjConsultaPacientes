@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProjConsulta.Data;
 using ProjConsulta.Entities;
+using ProjConsulta.Entities.DTO;
 using ProjConsulta.Services;
 
 namespace ProjConsulta.Controllers
@@ -43,13 +44,13 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
-        public IActionResult InsertDoc([FromBody] Doctors doc)
+        public IActionResult InsertDoc([FromBody] DoctorCreateDTO doctorCreateDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var insert = _doc.InsertDoctor(doc);
+            var insert = _doc.InsertDoctor(doctorCreateDTO);
             return Ok(insert);
         }
     }

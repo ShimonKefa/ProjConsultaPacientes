@@ -9,5 +9,6 @@ namespace ProjConsulta.Entities.DTO
         public GenderEnum gender { get; set; }
         public string? Email { get; set; }
         public DocProf docPrf { get; set; }
+        public RegStatus regStatus {get; set;}
     }
 }

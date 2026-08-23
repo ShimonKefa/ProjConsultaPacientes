@@ -1,5 +1,8 @@
-using ProjConsulta.Entities;
 using ProjConsulta.Data;
+using ProjConsulta.Entities;
+using ProjConsulta.Entities.DTO;
+using ProjConsulta.Entities.Enums;
+
 namespace ProjConsulta.Services
 {
     public class DoctorServices
@@ -9,24 +12,57 @@ namespace ProjConsulta.Services
         public DoctorServices(DBCOM context)
         {
             _context = context;
-        }   
-        public Doctors InsertDoctor(Doctors doctors)
+        }
+
+        public Doctors InsertDoctor(DoctorCreateDTO doctorCreateDTO)
         {
+            Doctors doctors = new Doctors
+            {
+                ID = doctorCreateDTO.ID,
+                Name = doctorCreateDTO.Name,
+                Age = doctorCreateDTO.Age,
+                gender = doctorCreateDTO.gender,
+                Email = doctorCreateDTO.Email,
+                docPrf = doctorCreateDTO.docPrf,
+            };
             _context.Database.EnsureCreated();
             _context.doctors.Add(doctors);
             _context.SaveChanges();
-            return doctors;   
-        }
-        
-        public List<Doctors> ShowDoctors()
-        {
-            return _context.doctors.ToList();
+            return doctors;
         }
 
-        public Doctors ShowDoctorID(Guid id)
+        public List<DoctorsResponseDTO> ShowDoctors()
         {
-            return _context.doctors.FirstOrDefault(c => c.ID == id);
-            
+            return _context
+                .doctors.Where(d => d.regStatus == RegStatus.ATIVO)
+                .Select(d => new DoctorsResponseDTO
+                {
+                    ID = d.ID,
+                    Name = d.Name,
+                    Age = d.Age,
+                    gender = d.gender,
+                    Email = d.Email,
+                    docPrf = d.docPrf,
+                    regStatus = d.regStatus,
+                })
+                .ToList();
+        }
+
+        public DoctorsResponseDTO? ShowDoctorID(Guid id)
+        {
+            return _context
+                .doctors.Where(d => d.ID == id && d.regStatus == RegStatus.ATIVO)
+                .Select(d => new DoctorsResponseDTO
+                {
+                    ID = d.ID,
+                    Name = d.Name,
+                    Age = d.Age,
+                    gender = d.gender,
+                    Email = d.Email,
+                    docPrf = d.docPrf,
+                    regStatus = d.regStatus,
+                })
+                .FirstOrDefault();
         }
     }
 }

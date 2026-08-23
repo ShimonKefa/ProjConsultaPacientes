@@ -9,14 +9,16 @@ namespace ProjConsulta.Entities
         public GenderEnum gender { get; set; }
         public string? Email { get; set; }
         public DocProf docPrf { get; set; }
+        public RegStatus regStatus {get; set;} = RegStatus.ATIVO;
         public Doctors(){ }        
-        public Doctors(Guid id, string? name, int age, GenderEnum gender, string email, DocProf docPrf){
+        public Doctors(Guid id, string? name, int age, GenderEnum gender, string email, DocProf docPrf, RegStatus regStatus){
             ID = id;
             Name = name;
             Age = age;
             this.gender = gender;
             Email = email;
             this.docPrf = docPrf;
+            this.regStatus = regStatus;
         }
     }
 }

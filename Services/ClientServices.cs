@@ -2,6 +2,7 @@ using System.Data.Common;
 using ProjConsulta.Data;
 using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
+using ProjConsulta.Entities.Enums;
 
 namespace ProjConsulta.Services
 {
@@ -31,22 +32,8 @@ namespace ProjConsulta.Services
 
         public List<ClientResponseDTO> ShowClients()
         {
-            return _context
-                .clients.Select(c => new ClientResponseDTO
-                {
-                    ID = c.ID,
-                    Name = c.Name,
-                    Age = c.Age,
-                    gender = c.gender,
-                    Email = c.Email
-                })
-                .ToList();
-        }
-
-        public ClientResponseDTO? ShowClientbyID(Guid id)
-        {
-            return _context
-                .clients.Where(c => c.ID == id)
+            return _context.clients
+                .Where(c => c.regStatus == RegStatus.ATIVO)
                 .Select(c => new ClientResponseDTO
                 {
                     ID = c.ID,
@@ -54,6 +41,23 @@ namespace ProjConsulta.Services
                     Age = c.Age,
                     gender = c.gender,
                     Email = c.Email,
+                    regStatus = c.regStatus
+                })
+                .ToList();
+        }
+
+        public ClientResponseDTO? ShowClientbyID(Guid id)
+        {
+            return _context
+                .clients.Where(c => c.ID == id && c.regStatus == RegStatus.ATIVO)
+                .Select(c => new ClientResponseDTO
+                {
+                    ID = c.ID,
+                    Name = c.Name,
+                    Age = c.Age,
+                    gender = c.gender,
+                    Email = c.Email,
+                    regStatus = c.regStatus
                 })
                 .FirstOrDefault();
         }
