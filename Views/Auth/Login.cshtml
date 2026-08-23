@@ -1,0 +1,60 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Entrar";
+}
+
+<main class="login-page">
+    <section class="login-brand" aria-labelledby="brand-title">
+        <a class="brand-logo" asp-controller="Auth" asp-action="Login" aria-label="Clínica Vitta - tela de login">
+            <img src="~/images/logo-clinica-vitta.svg" asp-append-version="true" alt="Clínica Vitta — Cuidar é nossa missão" />
+        </a>
+
+        <div class="brand-message">
+            <span class="section-label">Gestão que acolhe</span>
+            <h1 id="brand-title">Cuidar de pessoas começa com uma rotina mais leve.</h1>
+            <p>Organize a jornada dos seus pacientes com a identidade e o cuidado da Clínica Vitta.</p>
+        </div>
+
+        <div class="brand-decoration" aria-hidden="true">
+            <span class="decoration-dot dot-one"></span>
+            <span class="decoration-dot dot-two"></span>
+            <span class="decoration-line"></span>
+        </div>
+    </section>
+
+    <section class="login-content" aria-labelledby="login-title">
+        <div class="login-card">
+            <span class="login-kicker">Área da equipe</span>
+            <h2 id="login-title">Bem-vindo de volta</h2>
+            <p class="login-intro">Use suas credenciais para acessar a plataforma.</p>
+
+            <form class="login-form" asp-controller="Auth" asp-action="Login" method="post" novalidate>
+                <input asp-for="ReturnUrl" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+
+                <div class="form-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="email" autocomplete="email" placeholder="nome@clinicavitta.com.br" />
+                    <span asp-validation-for="Email" class="field-validation"></span>
+                </div>
+
+                <div class="form-field">
+                    <div class="field-label-row">
+                        <label asp-for="Password"></label>
+                    </div>
+                    <input asp-for="Password" autocomplete="current-password" placeholder="Digite sua senha" />
+                    <span asp-validation-for="Password" class="field-validation"></span>
+                </div>
+
+                <label class="checkbox-field" asp-for="RememberMe">
+                    <input asp-for="RememberMe" />
+                    <span>Lembrar de mim neste dispositivo</span>
+                </label>
+
+                <button class="primary-button" type="submit">
+                    Entrar na plataforma
+                </button>
+            </form>
+        </div>
+    </section>
+</main>

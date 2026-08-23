@@ -1,0 +1,43 @@
+:root {
+    --vitta-teal: #008f89;
+    --vitta-teal-dark: #006f6b;
+    --vitta-teal-soft: #e4f5f3;
+    --vitta-ink: #17242c;
+    --vitta-text: #4e5c62;
+    --vitta-muted: #738187;
+    --vitta-line: #dfe9e8;
+    --vitta-surface: #ffffff;
+    --vitta-background: #f7fbfb;
+    --vitta-shadow: 0 18px 45px rgba(22, 68, 68, 0.1);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: var(--vitta-ink);
+    background: var(--vitta-background);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-width: 320px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(0, 143, 137, 0.32);
+    outline-offset: 3px;
+}

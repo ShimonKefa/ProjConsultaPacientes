@@ -1,0 +1,160 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_DashboardLayout";
+}
+
+<div class="dashboard-shell">
+    <aside class="dashboard-sidebar" aria-label="Navegação principal">
+        <a class="dashboard-brand" asp-controller="Dashboard" asp-action="Index" aria-label="Clínica Vitta - Dashboard">
+            <img src="~/images/logo-clinica-vitta.svg" asp-append-version="true" alt="Clínica Vitta — Cuidar é nossa missão" />
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Módulos do sistema">
+            <a class="dashboard-nav-item is-active" asp-controller="Dashboard" asp-action="Index" aria-current="page">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" /></svg>
+                <span>Dashboard</span>
+            </a>
+            <span class="dashboard-nav-item is-disabled" aria-disabled="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3m10-3v3M4.5 9h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 18 19H6a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 6 5Z" /></svg>
+                <span>Agenda</span>
+            </span>
+            <span class="dashboard-nav-item is-disabled" aria-disabled="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-6A3.5 3.5 0 0 0 3 18.5V20m6.5-9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7 1 1.6 1.6L21 10.7M17 16h4" /></svg>
+                <span>Pacientes</span>
+            </span>
+            <span class="dashboard-nav-item is-disabled" aria-disabled="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 3.5 18.5V20M9.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm5.5-3h5m-2.5-2.5v5" /></svg>
+                <span>Profissionais</span>
+            </span>
+            <span class="dashboard-nav-item is-disabled" aria-disabled="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 8h6m-6 4h6m-6-8h2" /></svg>
+                <span>Histórico</span>
+            </span>
+        </nav>
+
+        <div class="support-card">
+            <span class="support-icon" aria-hidden="true">?</span>
+            <div>
+                <strong>Precisa de ajuda?</strong>
+                <p>Fale com o suporte da Clínica Vitta.</p>
+            </div>
+            <button type="button" disabled>Falar com suporte</button>
+        </div>
+    </aside>
+
+    <div class="dashboard-page">
+        <header class="dashboard-header">
+            <div>
+                <p class="dashboard-eyebrow">Visão geral</p>
+                <h1>Olá, equipe Clínica Vitta</h1>
+            </div>
+            <div class="header-actions">
+                <span class="header-date">Resumo do dia</span>
+                <form class="logout-form" asp-controller="Auth" asp-action="Logout" method="post">
+                    <button class="logout-button" type="submit">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4m4-4 4-3-4-3m4 3H9" /></svg>
+                        <span>Sair</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <section class="welcome-card" aria-labelledby="daily-summary-title">
+                <div>
+                    <span class="welcome-chip">Resumo de hoje</span>
+                    <h2 id="daily-summary-title">Uma rotina organizada para cuidar melhor.</h2>
+                    <p>Acompanhe os principais compromissos e atendimentos da Clínica Vitta em um só lugar.</p>
+                </div>
+                <div class="welcome-illustration" aria-hidden="true">
+                    <span class="illustration-circle circle-large"></span>
+                    <span class="illustration-circle circle-small"></span>
+                    <svg viewBox="0 0 120 120"><path d="M60 30c-18-15-37-3-34 15 3 19 21 36 34 45 13-9 31-26 34-45 3-18-16-30-34-15Z" /><path d="M60 40v38M60 40c-4 13-12 22-23 28M60 40c4 13 12 22 23 28" /></svg>
+                </div>
+            </section>
+
+            <section class="metric-grid" aria-label="Indicadores do dia">
+                <article class="metric-card metric-teal">
+                    <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v3m10-3v3M4.5 9h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 18 19H6a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 6 5Z" /></svg></span>
+                    <span class="metric-label">Consultas hoje</span>
+                    <strong>18</strong>
+                    <small>3 aguardando confirmação</small>
+                </article>
+                <article class="metric-card metric-blue">
+                    <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-6A3.5 3.5 0 0 0 3 18.5V20m6.5-9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7 1 1.6 1.6L21 10.7M17 16h4" /></svg></span>
+                    <span class="metric-label">Pacientes atendidos</span>
+                    <strong>156</strong>
+                    <small>+8 nesta semana</small>
+                </article>
+                <article class="metric-card metric-lilac">
+                    <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM3.5 20v-1.5A3.5 3.5 0 0 1 7 15h5a3.5 3.5 0 0 1 3.5 3.5V20m1-10h4m-2-2v4" /></svg></span>
+                    <span class="metric-label">Profissionais ativos</span>
+                    <strong>12</strong>
+                    <small>Equipe disponível hoje</small>
+                </article>
+                <article class="metric-card metric-yellow">
+                    <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7.5 12 3 3 6-7M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg></span>
+                    <span class="metric-label">Atendimentos concluídos</span>
+                    <strong>6</strong>
+                    <small>33% da agenda do dia</small>
+                </article>
+            </section>
+
+            <section class="dashboard-lower-grid">
+                <article class="dashboard-card appointments-card" aria-labelledby="appointments-title">
+                    <div class="card-heading">
+                        <div>
+                            <p class="card-kicker">Agenda</p>
+                            <h2 id="appointments-title">Próximos agendamentos</h2>
+                        </div>
+                        <span class="visual-link">Ver agenda</span>
+                    </div>
+
+                    <ol class="appointment-list">
+                        <li>
+                            <time datetime="08:00">08:00</time>
+                            <span class="appointment-marker marker-green"></span>
+                            <div><strong>João Silva</strong><span>Fisioterapia · Dra. Marina Souza</span></div>
+                            <span class="appointment-status status-confirmed">Confirmado</span>
+                        </li>
+                        <li>
+                            <time datetime="09:30">09:30</time>
+                            <span class="appointment-marker marker-blue"></span>
+                            <div><strong>Ana Costa</strong><span>Odontologia · Dr. Felipe Santos</span></div>
+                            <span class="appointment-status status-waiting">Aguardando</span>
+                        </li>
+                        <li>
+                            <time datetime="10:00">10:00</time>
+                            <span class="appointment-marker marker-lilac"></span>
+                            <div><strong>Patrícia Branco</strong><span>Psicologia · Dra. Beatriz Lima</span></div>
+                            <span class="appointment-status status-confirmed">Confirmado</span>
+                        </li>
+                        <li>
+                            <time datetime="11:30">11:30</time>
+                            <span class="appointment-marker marker-green"></span>
+                            <div><strong>André Martins</strong><span>Fisioterapia · Dra. Marina Souza</span></div>
+                            <span class="appointment-status status-confirmed">Confirmado</span>
+                        </li>
+                    </ol>
+                </article>
+
+                <aside class="dashboard-card focus-card" aria-labelledby="focus-title">
+                    <div class="card-heading">
+                        <div>
+                            <p class="card-kicker">Organização</p>
+                            <h2 id="focus-title">Foco do dia</h2>
+                        </div>
+                    </div>
+                    <div class="focus-progress" aria-label="6 de 18 atendimentos concluídos">
+                        <div class="progress-ring"><strong>33%</strong><span>concluído</span></div>
+                        <div><strong>6 de 18</strong><span>atendimentos finalizados</span></div>
+                    </div>
+                    <div class="focus-note">
+                        <span aria-hidden="true">i</span>
+                        <p>Três consultas ainda aguardam confirmação.</p>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+</div>

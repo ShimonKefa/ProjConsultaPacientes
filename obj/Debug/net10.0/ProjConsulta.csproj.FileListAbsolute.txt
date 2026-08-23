@@ -130,3 +130,13 @@ C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\refint\ProjC
 C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.pdb
 C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.genruntimeconfig.cache
 C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\ref\ProjConsulta.dll
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.RazorAssemblyInfo.cache
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.RazorAssemblyInfo.cs
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\bin\Debug\net10.0\ProjConsulta.staticwebassets.runtime.json
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\bin\Debug\net10.0\MailKit.dll
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\bin\Debug\net10.0\MimeKit.dll
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\compressed\qh5edqzbpk-{0}-isz1cnfwq0-isz1cnfwq0.gz
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\compressed\1ex1bybeae-{0}-wseirl3ymy-wseirl3ymy.gz
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\compressed\xe4ckt63vu-{0}-k0ic8277j8-k0ic8277j8.gz
+C:\Users\Pedro\Documents\C#\ProjConsultaPacientes\obj\Debug\net10.0\compressed\qntebdr95x-{0}-1bomy57ijp-1bomy57ijp.gz
