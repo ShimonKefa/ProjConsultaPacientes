@@ -67,11 +67,11 @@ namespace ProjConsulta.Services
         {
             var client = new Client
             {
-                regStatus = clientResponseDTO.regStatus                
+                regStatus = clientResponseDTO.regStatus
             };
 
             var aux1 = _context.clients.Find(CID);
-            if(aux1 == null)
+            if (aux1 == null)
             {
                 throw new DomainException("Cliente não encontrado");
             }

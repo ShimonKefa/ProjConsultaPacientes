@@ -60,6 +60,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
+        //update do registro pra delete
         public IActionResult DeleteClient([FromBody] ClientResponseDTO clientResponseDTO, Guid ID)
         {
             var delete = _client.DeleteClient(clientResponseDTO, ID);

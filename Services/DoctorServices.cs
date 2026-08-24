@@ -76,9 +76,7 @@ namespace ProjConsulta.Services
             {
                 throw new DomainException("Doutor não econtrado");
             }
-
             aux2.regStatus = RegStatus.INATIVO;
-
             return doctor;
         }
     }
