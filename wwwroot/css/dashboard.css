@@ -253,18 +253,14 @@
     flex: 0 0 12rem;
 }
 
-.welcome-illustration svg {
+.welcome-illustration img {
     position: absolute;
     z-index: 1;
     top: 1.2rem;
     right: 1.1rem;
     width: 6.8rem;
     height: 6.8rem;
-    fill: none;
-    stroke: #fff;
-    stroke-width: 4.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    object-fit: contain;
 }
 
 .illustration-circle {
