@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj": {}
+    "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj": {
+    "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj",
+        "projectUniqueName": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
         "projectName": "ProjConsulta",
-        "projectPath": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj",
-        "packagesPath": "C:\\Users\\ruanp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\obj\\",
+        "projectPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
+        "packagesPath": "C:\\Users\\Suporte\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ruanp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Suporte\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -39,7 +39,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

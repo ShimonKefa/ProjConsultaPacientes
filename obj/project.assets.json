@@ -772,19 +772,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ruanp\\.nuget\\packages\\": {}
+    "C:\\Users\\Suporte\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj",
+      "projectUniqueName": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
       "projectName": "ProjConsulta",
-      "projectPath": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\ProjConsulta.csproj",
-      "packagesPath": "C:\\Users\\ruanp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ruanp\\Downloads\\ProjConsultaPacientes\\obj\\",
+      "projectPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
+      "packagesPath": "C:\\Users\\Suporte\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ruanp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Suporte\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -809,7 +809,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.400"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
@@ -852,7 +852,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -1275,7 +1275,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "O pacote 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
+      "message": "Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
       "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
       "targetGraphs": [
         "net10.0"
