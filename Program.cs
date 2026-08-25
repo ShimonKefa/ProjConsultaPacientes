@@ -10,9 +10,6 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ============================================================
-// SERVIÇOS
-// ============================================================
 
 // OpenAPI
 builder.Services.AddOpenApi();
@@ -31,9 +28,15 @@ builder.Services.AddScoped<
     PasswordHasher<AppUser>
 >();
 
-// ============================================================
-// AUTENTICAÇÃO
-// ============================================================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -51,9 +54,6 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// ============================================================
-// CONTROLLERS + VIEWS
-// ============================================================
 
 builder.Services
     .AddControllersWithViews()
@@ -64,15 +64,11 @@ builder.Services
         );
     });
 
-// ============================================================
-// CONSTRUÇÃO DA APLICAÇÃO
-// ============================================================
+
 
 var app = builder.Build();
 
-// ============================================================
-// CONFIGURAÇÃO DO PIPELINE
-// ============================================================
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -87,9 +83,6 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-// ============================================================
-// INICIALIZAÇÃO DO BANCO E ADMIN
-// ============================================================
 
 using (var scope = app.Services.CreateScope())
 {
@@ -109,21 +102,13 @@ using (var scope = app.Services.CreateScope())
     );
 }
 
-// ============================================================
-// ROTAS
-// ============================================================
-
-// Rota padrão para MVC
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}"
 );
 
-// Mantém os Controllers/API com [Route]
 app.MapControllers();
+app.UseCors("AllowAll")
 
-// ============================================================
-// EXECUÇÃO
-// ============================================================
 
 app.Run();

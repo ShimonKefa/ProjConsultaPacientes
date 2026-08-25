@@ -54,7 +54,7 @@ namespace ProjConsulta.Controllers
             return Ok(insert);
         }
 
-        [HttpPost]
+        [HttpPost("{ID}/DeleteDoctor")]
         //update do registro pra delete
         public IActionResult DeleteClient([FromBody] DoctorsResponseDTO doctorsResponse, Guid ID)
         {

@@ -772,24 +772,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Suporte\\.nuget\\packages\\": {}
+    "C:\\Users\\Pedro\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
+      "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\24_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
       "projectName": "ProjConsulta",
-      "projectPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\ProjConsulta.csproj",
-      "packagesPath": "C:\\Users\\Suporte\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Suporte\\Documents\\PROGRAMAÇÃO\\c#\\Trabalho faculdade\\Trabalhov3\\obj\\",
+      "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\24_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+      "packagesPath": "C:\\Users\\Pedro\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\24_08\\ProjConsultaPacientes\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Suporte\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1275,7 +1277,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
+      "message": "O pacote 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
       "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
       "targetGraphs": [
         "net10.0"
