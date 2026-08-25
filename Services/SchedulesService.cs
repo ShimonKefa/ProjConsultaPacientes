@@ -9,9 +9,11 @@ namespace ProjConsulta.Services
     public class ScheduleService
     {
         private readonly DBCOM _context;
-        public ScheduleService(DBCOM context)
+        private readonly EmailSendService _send;
+        public ScheduleService(DBCOM context, EmailSendService send)
         {
             _context = context;
+            _send = send;
         }
         public Schedules StartSchedule(ScheduleCreateDTO _schedules)
         {
@@ -33,6 +35,8 @@ namespace ProjConsulta.Services
                     "Conflito de horário, possui algum atendimento agendado nesse horário"
                 );
             }
+
+            _send.ScheduleSendEmail(schedules);
             _context.schedules.Add(schedules);
             _context.SaveChanges();
             return schedules;
@@ -118,13 +122,13 @@ namespace ProjConsulta.Services
             .Where(s => s.ID == id)
             .Select(s => new ScheduleResponseDTO
             {
-                    ID = s.ID,
-                    ClientID = s.ClientID,
-                    DocID = s.DocID,
-                    consultingRooms = s.consultingRooms,
-                    EntranceDate = s.EntranceDate,
-                    ScheduleDate = s.ScheduleDate,
-                    scheduleStatus = s.scheduleStatus,
+                ID = s.ID,
+                ClientID = s.ClientID,
+                DocID = s.DocID,
+                consultingRooms = s.consultingRooms,
+                EntranceDate = s.EntranceDate,
+                ScheduleDate = s.ScheduleDate,
+                scheduleStatus = s.scheduleStatus,
             })
             .FirstOrDefault();
         }

@@ -14,14 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 // OpenAPI
 builder.Services.AddOpenApi();
 
-// Banco de dados
+
 builder.Services.AddDbContext<DBCOM>();
 builder.Services.AddScoped<ScheduleService>();
-//chamada do controller shcedules
-// Serviços da aplicação
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<DoctorServices>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<EmailSendService>();
+builder.Services.AddScoped<EnvironmentService>();
 
 // Hash de senha
 builder.Services.AddScoped<
@@ -68,8 +68,6 @@ builder.Services
 
 
 var app = builder.Build();
-
-
 
 if (app.Environment.IsDevelopment())
 {

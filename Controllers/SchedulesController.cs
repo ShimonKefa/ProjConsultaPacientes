@@ -11,7 +11,7 @@ namespace ProjConsulta.Controllers
     {
         private readonly ScheduleService _schedule;
 
-        public SchedulesController(ScheduleService schedule)
+        public SchedulesController(ScheduleService schedule, EmailSendService sendEmail)
         {
             _schedule = schedule;
         }

@@ -463,3 +463,14 @@ C:\Users\Pedro\Documents\C#\trabalho do bessa\24_08\ProjConsultaPacientes\obj\De
 C:\Users\Pedro\Documents\C#\trabalho do bessa\24_08\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.pdb
 C:\Users\Pedro\Documents\C#\trabalho do bessa\24_08\ProjConsultaPacientes\obj\Debug\net10.0\ProjConsulta.genruntimeconfig.cache
 C:\Users\Pedro\Documents\C#\trabalho do bessa\24_08\ProjConsultaPacientes\obj\Debug\net10.0\ref\ProjConsulta.dll
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\bin\Debug\net10.0\ProjConsulta.staticwebassets.runtime.json
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\bin\Debug\net10.0\MailKit.dll
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\bin\Debug\net10.0\MimeKit.dll
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\ProjConsulta.RazorAssemblyInfo.cache
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\ProjConsulta.RazorAssemblyInfo.cs
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\compressed\qh5edqzbpk-{0}-isz1cnfwq0-isz1cnfwq0.gz
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\compressed\1ex1bybeae-{0}-w7g53rjb4p-w7g53rjb4p.gz
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\compressed\xe4ckt63vu-{0}-k0ic8277j8-k0ic8277j8.gz
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\compressed\wdfehswg2q-{0}-rmv5ukur4e-rmv5ukur4e.gz
+C:\Users\Suporte\Documents\PROGRAMAÇÃO\c#\ProjConsulta\obj\Debug\net10.0\compressed\qntebdr95x-{0}-1bomy57ijp-1bomy57ijp.gz
