@@ -108,7 +108,7 @@ app.MapControllerRoute(
 );
 
 app.MapControllers();
-app.UseCors("AllowAll")
+app.UseCors("AllowAll");
 
 
 app.Run();

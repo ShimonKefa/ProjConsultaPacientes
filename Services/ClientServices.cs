@@ -76,6 +76,7 @@ namespace ProjConsulta.Services
                 throw new DomainException("Cliente não encontrado");
             }
             aux1.regStatus = RegStatus.INATIVO;
+            _context.SaveChanges();
             return client;
         }
     }
