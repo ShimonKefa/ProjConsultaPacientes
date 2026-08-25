@@ -16,7 +16,8 @@ builder.Services.AddOpenApi();
 
 // Banco de dados
 builder.Services.AddDbContext<DBCOM>();
-
+builder.Services.AddScoped<ScheduleService>();
+//chamada do controller shcedules
 // Serviços da aplicação
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<DoctorServices>();
