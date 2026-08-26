@@ -3,6 +3,7 @@ using ProjConsulta.Data;
 using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
 using ProjConsulta.Entities.Enums;
+using ProjConsulta.Entities.Exceptions;
 
 namespace ProjConsulta.Services
 {
@@ -60,6 +61,23 @@ namespace ProjConsulta.Services
                     regStatus = c.regStatus
                 })
                 .FirstOrDefault();
+        }
+
+        public Client DeleteClient(ClientResponseDTO clientResponseDTO, Guid CID)
+        {
+            var client = new Client
+            {
+                regStatus = clientResponseDTO.regStatus
+            };
+
+            var aux1 = _context.clients.Find(CID);
+            if (aux1 == null)
+            {
+                throw new DomainException("Cliente não encontrado");
+            }
+            aux1.regStatus = RegStatus.INATIVO;
+            _context.SaveChanges();
+            return client;
         }
     }
 }

@@ -21,15 +21,28 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DBCOM>();
 
 // Serviços da aplicação
+builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<DoctorServices>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<EmailSendService>();
+builder.Services.AddScoped<EnvironmentService>();
 
 // Hash de senha
 builder.Services.AddScoped<
     IPasswordHasher<AppUser>,
     PasswordHasher<AppUser>
 >();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 // ============================================================
 // AUTENTICAÇÃO
@@ -80,11 +93,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
-app.UseAuthentication();
+app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // ============================================================

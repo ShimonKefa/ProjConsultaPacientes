@@ -2,6 +2,7 @@ using ProjConsulta.Data;
 using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
 using ProjConsulta.Entities.Enums;
+using ProjConsulta.Entities.Exceptions;
 
 namespace ProjConsulta.Services
 {
@@ -62,6 +63,22 @@ namespace ProjConsulta.Services
                     regStatus = d.regStatus,
                 })
                 .FirstOrDefault();
+        }
+
+        public Doctors DeleteDoctor(DoctorsResponseDTO doctorsResponseDTO, Guid DOCID)
+        {
+            var doctor = new Doctors
+            {
+                regStatus = doctorsResponseDTO.regStatus
+            };
+            var aux2 = _context.doctors.Find(DOCID);
+            if(aux2 == null)
+            {
+                throw new DomainException("Doutor não econtrado");
+            }
+            aux2.regStatus = RegStatus.INATIVO;
+            _context.SaveChanges();
+            return doctor;
         }
     }
 }

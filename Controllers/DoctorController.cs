@@ -53,5 +53,14 @@ namespace ProjConsulta.Controllers
             var insert = _doc.InsertDoctor(doctorCreateDTO);
             return Ok(insert);
         }
+
+        [HttpPost("{ID}/DeleteDoctor")]
+        //update do registro pra delete
+        public IActionResult DeleteClient([FromBody] DoctorsResponseDTO doctorsResponse, Guid ID)
+        {
+            var delete = _doc.DeleteDoctor(doctorsResponse, ID);
+            return Ok(delete);
+
+        }
     }
 }
