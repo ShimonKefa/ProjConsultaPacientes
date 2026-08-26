@@ -1,0 +1,98 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Cadastre-se";
+}
+
+<main class="login-page">
+    <section class="login-brand" aria-labelledby="brand-title">
+        <a class="brand-logo" asp-controller="Auth" asp-action="Login" aria-label="Clínica Vitta - tela inicial">
+            <img src="~/images/logo-clinica-vitta.svg" asp-append-version="true" alt="Clínica Vitta — Cuidar é nossa missão" />
+        </a>
+
+        <div class="brand-message">
+            <span class="section-label">Novo acesso</span>
+            <h1 id="brand-title">Faça parte da nossa gestão do cuidado.</h1>
+            <p>Cadastre seu usuário para ter acesso ao prontuário, agendamentos e controle integrado da Clínica Vitta.</p>
+        </div>
+
+        <div class="brand-decoration" aria-hidden="true">
+            <span class="decoration-dot dot-one"></span>
+            <span class="decoration-dot dot-two"></span>
+            <span class="decoration-line"></span>
+        </div>
+    </section>
+
+    <section class="login-content" aria-labelledby="register-title">
+        <div class="login-card">
+            <span class="login-kicker">Área da equipe</span>
+            <h2 id="register-title">Criar nova conta</h2>
+            <p class="login-intro">Preencha seus dados para ter acesso à plataforma.</p>
+
+            <form class="login-form" asp-controller="Auth" asp-action="Register" method="post" novalidate>
+                <input asp-for="ReturnUrl" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+
+                <div class="form-field">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" autocomplete="name" placeholder="Seu nome completo" />
+                    <span asp-validation-for="Name" class="field-validation"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="email" autocomplete="email" placeholder="nome@clinicavitta.com.br" />
+                    <span asp-validation-for="Email" class="field-validation"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="Password"></label>
+                    <div class="password-input-wrapper">
+                        <input asp-for="Password" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" />
+                        <button type="button" class="password-toggle-btn" aria-label="Mostrar senha" title="Mostrar senha">
+                            <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                <line x1="2" x2="22" y1="2" y2="22"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="field-validation"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="ConfirmPassword"></label>
+                    <div class="password-input-wrapper">
+                        <input asp-for="ConfirmPassword" autocomplete="new-password" placeholder="Digite novamente a senha" />
+                        <button type="button" class="password-toggle-btn" aria-label="Mostrar senha" title="Mostrar senha">
+                            <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                <line x1="2" x2="22" y1="2" y2="22"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="field-validation"></span>
+                </div>
+
+                <button class="primary-button" type="submit">
+                    Criar conta e acessar
+                </button>
+            </form>
+
+            <div class="auth-card-footer">
+                <span>Já possui uma conta?</span>
+                <a class="auth-link" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl">Fazer login</a>
+            </div>
+        </div>
+    </section>
+</main>
