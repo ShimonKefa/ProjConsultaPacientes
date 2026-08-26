@@ -95,8 +95,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Consultas hoje</span>
-                        <div class="stat-value">18</div>
-                        <span class="stat-sub">3 aguardando confirmação</span>
+                        <div class="stat-value" id="stat-dash-today">18</div>
+                        <span class="stat-sub" id="stat-dash-today-sub">3 aguardando confirmação</span>
                     </div>
                 </div>
 
@@ -106,8 +106,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Pacientes cadastrados</span>
-                        <div class="stat-value">156</div>
-                        <span class="stat-sub">+8 nesta semana</span>
+                        <div class="stat-value" id="stat-dash-patients">156</div>
+                        <span class="stat-sub" id="stat-dash-patients-sub">+8 nesta semana</span>
                     </div>
                 </div>
 
@@ -117,8 +117,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Profissionais ativos</span>
-                        <div class="stat-value">12</div>
-                        <span class="stat-sub">Corpo clínico disponível</span>
+                        <div class="stat-value" id="stat-dash-doctors">12</div>
+                        <span class="stat-sub" id="stat-dash-doctors-sub">Corpo clínico disponível</span>
                     </div>
                 </div>
 
@@ -128,8 +128,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Atendimentos concluídos</span>
-                        <div class="stat-value">6</div>
-                        <span class="stat-sub">33% da agenda do dia</span>
+                        <div class="stat-value" id="stat-dash-completed">6</div>
+                        <span class="stat-sub" id="stat-dash-completed-sub">33% da agenda do dia</span>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                         </a>
                     </div>
 
-                    <ul class="appointment-preview-list">
+                    <ul class="appointment-preview-list" id="dashboard-preview-list">
                         <li class="appointment-preview-item">
                             <div class="preview-left">
                                 <span class="preview-time">08:00</span>
@@ -201,19 +201,19 @@
                         <div class="progress-ring">
                             <svg>
                                 <circle class="bg" cx="30" cy="30" r="24"></circle>
-                                <circle class="meter" cx="30" cy="30" r="24" style="stroke-dashoffset: 64;"></circle>
+                                <circle class="meter" id="dash-progress-meter" cx="30" cy="30" r="24" style="stroke-dashoffset: 64;"></circle>
                             </svg>
-                            <span class="progress-text-center">33%</span>
+                            <span class="progress-text-center" id="dash-progress-text">33%</span>
                         </div>
                         <div class="progress-meta">
-                            <div class="count">6 de 18</div>
-                            <div class="desc">atendimentos finalizados</div>
+                            <div class="count" id="dash-progress-count">6 de 18</div>
+                            <div class="desc" id="dash-progress-desc">atendimentos finalizados</div>
                         </div>
                     </div>
 
-                    <div class="alert-info-box">
+                    <div class="alert-info-box" id="dash-progress-alert">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span>Três consultas ainda aguardam confirmação dos pacientes.</span>
+                        <span id="dash-progress-alert-text">Três consultas ainda aguardam confirmação dos pacientes.</span>
                     </div>
                 </aside>
             </div>
@@ -265,7 +265,7 @@
                     <div class="stat-info">
                         <span class="stat-label">Concluídos</span>
                         <div class="stat-value" id="stat-completed-agenda">6</div>
-                        <span class="stat-sub">33% da agenda do dia</span>
+                        <span class="stat-sub" id="stat-completed-agenda-sub">33% da agenda do dia</span>
                     </div>
                 </div>
             </div>
@@ -275,9 +275,9 @@
                 <!-- Controls Row -->
                 <div class="controls-row">
                     <div class="date-navigator">
-                        <button type="button" onclick="changeDate(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button type="button" onclick="changeDate(-1)" title="Dia Anterior"><i class="fa-solid fa-chevron-left"></i></button>
                         <span class="current-date-text" id="date-display">24 de Agosto, 2026 (Hoje)</span>
-                        <button type="button" onclick="changeDate(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button type="button" onclick="changeDate(1)" title="Próximo Dia"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
 
                     <div class="filter-group">
@@ -293,9 +293,9 @@
                         </select>
 
                         <div class="view-toggler">
-                            <button type="button" class="view-btn active">Dia</button>
-                            <button type="button" class="view-btn">Semana</button>
-                            <button type="button" class="view-btn">Mês</button>
+                            <button type="button" class="view-btn active" onclick="setAgendaView('dia', this)">Dia</button>
+                            <button type="button" class="view-btn" onclick="setAgendaView('semana', this)">Semana</button>
+                            <button type="button" class="view-btn" onclick="setAgendaView('mes', this)">Mês</button>
                         </div>
                     </div>
                 </div>
@@ -550,7 +550,7 @@
                     <div class="stat-info">
                         <span class="stat-label">Total Cadastrados</span>
                         <div class="stat-value" id="stat-total-patients">156</div>
-                        <span class="stat-sub">+8 cadastros esta semana</span>
+                        <span class="stat-sub" id="stat-total-patients-sub">+8 cadastros esta semana</span>
                     </div>
                 </div>
 
@@ -561,7 +561,7 @@
                     <div class="stat-info">
                         <span class="stat-label">Pacientes Ativos</span>
                         <div class="stat-value" id="stat-active-patients">148</div>
-                        <span class="stat-sub">95% da base total</span>
+                        <span class="stat-sub" id="stat-active-patients-sub">95% da base total</span>
                     </div>
                 </div>
 
@@ -571,8 +571,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Atendidos no Mês</span>
-                        <div class="stat-value">42</div>
-                        <span class="stat-sub">Consultas realizadas</span>
+                        <div class="stat-value" id="stat-attended-month-patients">42</div>
+                        <span class="stat-sub" id="stat-attended-month-patients-sub">Consultas realizadas</span>
                     </div>
                 </div>
 
@@ -583,7 +583,7 @@
                     <div class="stat-info">
                         <span class="stat-label">Inativos / Pausados</span>
                         <div class="stat-value" id="stat-inactive-patients">8</div>
-                        <span class="stat-sub">Sem retorno > 6 meses</span>
+                        <span class="stat-sub" id="stat-inactive-patients-sub">Sem retorno > 6 meses</span>
                     </div>
                 </div>
             </div>
@@ -841,13 +841,13 @@
 
                 <!-- Pagination -->
                 <div class="pagination-bar">
-                    <span>Exibindo 1-5 de 156 pacientes</span>
-                    <div class="pagination-controls">
-                        <button type="button" class="page-btn"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
-                        <button type="button" class="page-btn active">1</button>
-                        <button type="button" class="page-btn">2</button>
-                        <button type="button" class="page-btn">3</button>
-                        <button type="button" class="page-btn">Próximo <i class="fa-solid fa-chevron-right"></i></button>
+                    <span id="patient-pagination-info">Exibindo 1-5 de 156 pacientes</span>
+                    <div class="pagination-controls" id="patient-pagination-controls">
+                        <button type="button" class="page-btn" onclick="prevPatientPage()"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+                        <button type="button" class="page-btn active" onclick="goToPatientPage(1)">1</button>
+                        <button type="button" class="page-btn" onclick="goToPatientPage(2)">2</button>
+                        <button type="button" class="page-btn" onclick="goToPatientPage(3)">3</button>
+                        <button type="button" class="page-btn" onclick="nextPatientPage()">Próximo <i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
             </div>
@@ -858,7 +858,7 @@
                     <span class="panel-subtitle">CONVÊNIOS</span>
                     <h3 class="panel-title">Distribuição</h3>
 
-                    <div class="plan-summary-list">
+                    <div class="plan-summary-list" id="patient-plan-summary-list">
                         <div class="plan-item">
                             <div class="plan-info">
                                 <div class="plan-dot" style="background-color: #0369a1;"></div>
@@ -1275,8 +1275,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Total Realizado</span>
-                        <div class="stat-value">1.248</div>
-                        <span class="stat-sub">Consultas concluídas</span>
+                        <div class="stat-value" id="stat-total-history">1.248</div>
+                        <span class="stat-sub" id="stat-total-history-sub">Consultas concluídas</span>
                     </div>
                 </div>
 
@@ -1286,8 +1286,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Taxa de Presença</span>
-                        <div class="stat-value">96.4%</div>
-                        <span class="stat-sub">Excelente assiduidade</span>
+                        <div class="stat-value" id="stat-presence-rate">96.4%</div>
+                        <span class="stat-sub" id="stat-presence-rate-sub">Excelente assiduidade</span>
                     </div>
                 </div>
 
@@ -1297,8 +1297,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Atendidos este Mês</span>
-                        <div class="stat-value">184</div>
-                        <span class="stat-sub">Agosto de 2026</span>
+                        <div class="stat-value" id="stat-attended-month-history">184</div>
+                        <span class="stat-sub" id="stat-attended-month-history-sub">Agosto de 2026</span>
                     </div>
                 </div>
 
@@ -1308,8 +1308,8 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Satisfação Média</span>
-                        <div class="stat-value">4.9 / 5.0</div>
-                        <span class="stat-sub">Avaliação dos pacientes</span>
+                        <div class="stat-value" id="stat-rating-history">4.9 / 5.0</div>
+                        <span class="stat-sub" id="stat-rating-history-sub">Avaliação dos pacientes</span>
                     </div>
                 </div>
             </div>
@@ -1525,13 +1525,13 @@
 
                 <!-- Pagination -->
                 <div class="pagination-bar">
-                    <span>Exibindo 1-5 de 1.248 registros</span>
-                    <div class="pagination-controls">
-                        <button type="button" class="page-btn"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
-                        <button type="button" class="page-btn active">1</button>
-                        <button type="button" class="page-btn">2</button>
-                        <button type="button" class="page-btn">3</button>
-                        <button type="button" class="page-btn">Próximo <i class="fa-solid fa-chevron-right"></i></button>
+                    <span id="history-pagination-info">Exibindo 1-5 de 1.248 registros</span>
+                    <div class="pagination-controls" id="history-pagination-controls">
+                        <button type="button" class="page-btn" onclick="prevHistoryPage()"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+                        <button type="button" class="page-btn active" onclick="goToHistoryPage(1)">1</button>
+                        <button type="button" class="page-btn" onclick="goToHistoryPage(2)">2</button>
+                        <button type="button" class="page-btn" onclick="goToHistoryPage(3)">3</button>
+                        <button type="button" class="page-btn" onclick="nextHistoryPage()">Próximo <i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
             </div>
@@ -1542,11 +1542,11 @@
                     <span class="panel-subtitle">ESTATÍSTICAS</span>
                     <h3 class="panel-title">Por Especialidade</h3>
 
-                    <div class="stat-bar-list">
+                    <div class="stat-bar-list" id="history-spec-bar-list">
                         <div class="stat-bar-item">
                             <div class="stat-bar-header">
                                 <span>Fisioterapia</span>
-                                <span>38%</span>
+                                <span class="spec-percent">38%</span>
                             </div>
                             <div class="stat-bar-bg">
                                 <div class="stat-bar-fill" style="width: 38%;"></div>
@@ -1556,7 +1556,7 @@
                         <div class="stat-bar-item">
                             <div class="stat-bar-header">
                                 <span>Odontologia</span>
-                                <span>26%</span>
+                                <span class="spec-percent">26%</span>
                             </div>
                             <div class="stat-bar-bg">
                                 <div class="stat-bar-fill" style="width: 26%;"></div>
@@ -1566,7 +1566,7 @@
                         <div class="stat-bar-item">
                             <div class="stat-bar-header">
                                 <span>Psicologia</span>
-                                <span>18%</span>
+                                <span class="spec-percent">18%</span>
                             </div>
                             <div class="stat-bar-bg">
                                 <div class="stat-bar-fill" style="width: 18%;"></div>
@@ -1576,7 +1576,7 @@
                         <div class="stat-bar-item">
                             <div class="stat-bar-header">
                                 <span>Cardiologia</span>
-                                <span>12%</span>
+                                <span class="spec-percent">12%</span>
                             </div>
                             <div class="stat-bar-bg">
                                 <div class="stat-bar-fill" style="width: 12%;"></div>
@@ -1586,7 +1586,7 @@
                         <div class="stat-bar-item">
                             <div class="stat-bar-header">
                                 <span>Pediatria</span>
-                                <span>6%</span>
+                                <span class="spec-percent">6%</span>
                             </div>
                             <div class="stat-bar-bg">
                                 <div class="stat-bar-fill" style="width: 6%;"></div>
@@ -1599,7 +1599,7 @@
                     <h4>Profissional do Mês</h4>
                     <p>Maior volume de atendimentos concluídos com pontuação máxima de satisfação:</p>
 
-                    <div class="highlight-doctor-item">
+                    <div class="highlight-doctor-item" id="history-top-doctor">
                         <div class="highlight-avatar">MS</div>
                         <div class="highlight-meta">
                             <div class="doc-n">Dra. Marina Souza</div>
