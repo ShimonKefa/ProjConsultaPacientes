@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Trabalhov3-main\\ProjConsulta.csproj": {}
+    "d:\\Trabalhov3-main\\ProjConsulta.csproj": {}
   },
   "projects": {
-    "D:\\Trabalhov3-main\\ProjConsulta.csproj": {
+    "d:\\Trabalhov3-main\\ProjConsulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
+        "projectUniqueName": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
         "projectName": "ProjConsulta",
-        "projectPath": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
+        "projectPath": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
         "packagesPath": "C:\\Users\\gabsm\\.nuget\\packages\\",
-        "outputPath": "D:\\Trabalhov3-main\\obj\\",
+        "outputPath": "d:\\Trabalhov3-main\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gabsm\\AppData\\Roaming\\NuGet\\NuGet.Config"

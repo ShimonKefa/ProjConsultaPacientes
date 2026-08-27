@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "319P2ej3Gcs=",
+  "dgSpecHash": "/1pUZd5T0eE=",
   "success": true,
-  "projectFilePath": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
+  "projectFilePath": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gabsm\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\gabsm\\.nuget\\packages\\mailkit\\4.17.0\\mailkit.4.17.0.nupkg.sha512",
@@ -28,9 +28,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "O pacote 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
-      "projectPath": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
+      "projectPath": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
+      "filePath": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
       "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
       "targetGraphs": [
         "net10.0"
