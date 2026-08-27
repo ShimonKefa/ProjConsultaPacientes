@@ -34,7 +34,7 @@ namespace ProjConsulta.Services
         public List<DoctorsResponseDTO> ShowDoctors()
         {
             return _context
-                .doctors.Where(d => d.regStatus == RegStatus.ATIVO)
+                .doctors
                 .Select(d => new DoctorsResponseDTO
                 {
                     ID = d.ID,

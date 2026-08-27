@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjConsulta.Entities.DTO;
+using ProjConsulta.Entities.Enums;
 using ProjConsulta.Entities.Exceptions;
 using ProjConsulta.Services;
 
@@ -14,6 +15,20 @@ namespace ProjConsulta.Controllers
         public SchedulesController(ScheduleService schedule, EmailSendService sendEmail)
         {
             _schedule = schedule;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllSchedules()
+        {
+            var schedules = _schedule.GetAllSchedules();
+            return Ok(schedules);
+        }
+
+        [HttpGet("Range")]
+        public IActionResult GetSchedulesByRange([FromQuery] DateTime start, [FromQuery] DateTime end)
+        {
+            var schedules = _schedule.GetSchedulesByRange(start, end);
+            return Ok(schedules);
         }
 
         [HttpGet("Pendentes")]
@@ -80,6 +95,20 @@ namespace ProjConsulta.Controllers
             try
             {
                 var schedule = _schedule.FinishSchedules(ID);
+                return Ok(schedule);
+            }
+            catch (DomainException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut("{ID}/Revert")]
+        public IActionResult RevertSchedule(Guid ID, [FromQuery] ScheduleStatus status = ScheduleStatus.ATENDENDO)
+        {
+            try
+            {
+                var schedule = _schedule.RevertSchedule(ID, status);
                 return Ok(schedule);
             }
             catch (DomainException ex)

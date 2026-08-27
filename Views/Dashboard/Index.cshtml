@@ -62,6 +62,43 @@
             <div class="header-actions">
                 <div id="dynamic-header-actions" class="header-actions"></div>
 
+                <!-- Date Period Filter Component (Top Right of Dashboard) -->
+                <div class="date-period-filter-widget" id="dashboard-period-filter-container">
+                    <div class="period-inputs-group">
+                        <div class="period-input-field">
+                            <span class="field-prefix"><i class="fa-regular fa-calendar"></i> De</span>
+                            <input type="date" id="dash-filter-start" class="date-picker-custom" title="Data Inicial" />
+                        </div>
+                        <span class="period-separator"><i class="fa-solid fa-arrow-right"></i></span>
+                        <div class="period-input-field">
+                            <span class="field-prefix"><i class="fa-regular fa-calendar-check"></i> Até</span>
+                            <input type="date" id="dash-filter-end" class="date-picker-custom" title="Data Final" />
+                        </div>
+                        <button type="button" class="btn-period-apply" onclick="applyDashboardPeriodFilter()" title="Filtrar Período">
+                            <i class="fa-solid fa-filter"></i>
+                            <span>Filtrar</span>
+                        </button>
+                        <button type="button" class="btn-period-today" onclick="resetDashboardPeriodToday()" title="Voltar para Hoje">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>Hoje</span>
+                        </button>
+                        <div class="preset-dropdown-wrap">
+                            <button type="button" class="btn-period-preset" onclick="togglePresetDropdown(event)" title="Atalhos Rápidos">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <i class="fa-solid fa-chevron-down" style="font-size: 9px; margin-left: 2px;"></i>
+                            </button>
+                            <div class="preset-dropdown-menu" id="preset-dropdown-menu">
+                                <button type="button" onclick="selectPeriodPreset('hoje')"><i class="fa-solid fa-calendar-day"></i> Hoje</button>
+                                <button type="button" onclick="selectPeriodPreset('ontem')"><i class="fa-solid fa-calendar-minus"></i> Ontem</button>
+                                <button type="button" onclick="selectPeriodPreset('7dias')"><i class="fa-solid fa-calendar-week"></i> Últimos 7 dias</button>
+                                <button type="button" onclick="selectPeriodPreset('30dias')"><i class="fa-solid fa-calendar-days"></i> Últimos 30 dias</button>
+                                <button type="button" onclick="selectPeriodPreset('este-mes')"><i class="fa-solid fa-calendar"></i> Este mês</button>
+                                <button type="button" onclick="selectPeriodPreset('mes-anterior')"><i class="fa-solid fa-calendar-xmark"></i> Mês anterior</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <form class="logout-form" asp-controller="Auth" asp-action="Logout" method="post">
                     <button class="logout-button" type="submit" title="Encerrar Sessão">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -75,64 +112,66 @@
              TAB 1: DASHBOARD (VISÃO GERAL)
              ============================================================ -->
         <main class="content-body tab-pane active" id="tab-dashboard">
-            <!-- Welcome Banner -->
-            <section class="welcome-card">
-                <div>
-                    <span class="welcome-chip"><i class="fa-solid fa-sparkles"></i> Resumo de hoje</span>
-                    <h2>Uma rotina organizada para cuidar melhor.</h2>
-                    <p>Acompanhe os principais compromissos, pacientes e atendimentos da Clínica Vitta em um só lugar.</p>
+            <!-- Unified Dashboard Summary Hero Panel -->
+            <section class="dashboard-hero-card">
+                <div class="hero-top">
+                    <div>
+                        <span class="welcome-chip" id="dash-hero-chip"><i class="fa-solid fa-sparkles"></i> Resumo de hoje</span>
+                        <h2 id="dash-hero-title">Uma rotina organizada para cuidar melhor.</h2>
+                        <p id="dash-hero-desc">Acompanhe os principais compromissos, pacientes e atendimentos da Clínica Vitta em um só lugar.</p>
+                    </div>
+                    <div class="welcome-illustration" aria-hidden="true">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
                 </div>
-                <div class="welcome-illustration" aria-hidden="true">
-                    <i class="fa-solid fa-shield-heart"></i>
+
+                <!-- Metric Summary Cards inside Hero Container -->
+                <div class="hero-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon teal">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" id="stat-dash-today-label">Consultas hoje</span>
+                            <div class="stat-value" id="stat-dash-today">18</div>
+                            <span class="stat-sub" id="stat-dash-today-sub">3 aguardando confirmação</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Pacientes cadastrados</span>
+                            <div class="stat-value" id="stat-dash-patients">156</div>
+                            <span class="stat-sub" id="stat-dash-patients-sub">+8 nesta semana</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Profissionais ativos</span>
+                            <div class="stat-value" id="stat-dash-doctors">12</div>
+                            <span class="stat-sub" id="stat-dash-doctors-sub">Corpo clínico disponível</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" id="stat-dash-completed-label">Atendimentos concluídos</span>
+                            <div class="stat-value" id="stat-dash-completed">6</div>
+                            <span class="stat-sub" id="stat-dash-completed-sub">33% da agenda do dia</span>
+                        </div>
+                    </div>
                 </div>
             </section>
-
-            <!-- Metric Summary Cards -->
-            <div class="stats-banner">
-                <div class="stat-card">
-                    <div class="stat-icon teal">
-                        <i class="fa-solid fa-calendar-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <span class="stat-label">Consultas hoje</span>
-                        <div class="stat-value" id="stat-dash-today">18</div>
-                        <span class="stat-sub" id="stat-dash-today-sub">3 aguardando confirmação</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon blue">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <span class="stat-label">Pacientes cadastrados</span>
-                        <div class="stat-value" id="stat-dash-patients">156</div>
-                        <span class="stat-sub" id="stat-dash-patients-sub">+8 nesta semana</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon purple">
-                        <i class="fa-solid fa-user-doctor"></i>
-                    </div>
-                    <div class="stat-info">
-                        <span class="stat-label">Profissionais ativos</span>
-                        <div class="stat-value" id="stat-dash-doctors">12</div>
-                        <span class="stat-sub" id="stat-dash-doctors-sub">Corpo clínico disponível</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon green">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <span class="stat-label">Atendimentos concluídos</span>
-                        <div class="stat-value" id="stat-dash-completed">6</div>
-                        <span class="stat-sub" id="stat-dash-completed-sub">33% da agenda do dia</span>
-                    </div>
-                </div>
-            </div>
 
             <!-- Lower Grid -->
             <div class="dashboard-lower-grid">
@@ -140,8 +179,8 @@
                 <article class="dashboard-card">
                     <div class="card-heading">
                         <div>
-                            <span class="card-kicker">AGENDA DO DIA</span>
-                            <h2>Próximos agendamentos</h2>
+                            <span class="card-kicker" id="dash-preview-kicker">AGENDA DO DIA</span>
+                            <h2 id="dash-preview-title">Próximos agendamentos</h2>
                         </div>
                         <a href="javascript:void(0)" onclick="switchTab('agenda')" class="visual-link">
                             Ver agenda completa <i class="fa-solid fa-arrow-right"></i>
@@ -452,9 +491,14 @@
                                 <span class="status-badge concluido">
                                     <i class="fa-solid fa-check-double"></i> Concluído
                                 </span>
-                                <button type="button" class="btn-icon-only" title="Ver Detalhes" onclick="switchTab('historico')">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
+                                <div class="action-btns">
+                                    <button type="button" class="btn-action btn-revert" onclick="revertStatus(this)" title="Reverter Consulta">
+                                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                                    </button>
+                                    <button type="button" class="btn-icon-only" title="Ver Detalhes" onclick="switchTab('historico')">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -471,19 +515,19 @@
                         <div class="progress-ring">
                             <svg>
                                 <circle class="bg" cx="30" cy="30" r="24"></circle>
-                                <circle class="meter" cx="30" cy="30" r="24" style="stroke-dashoffset: 64;"></circle>
+                                <circle class="meter" id="agenda-progress-meter" cx="30" cy="30" r="24" style="stroke-dashoffset: 64;"></circle>
                             </svg>
-                            <span class="progress-text-center">35%</span>
+                            <span class="progress-text-center" id="agenda-progress-text">35%</span>
                         </div>
                         <div class="progress-meta">
-                            <div class="count">6 de 18</div>
-                            <div class="desc">atendimentos finalizados</div>
+                            <div class="count" id="agenda-progress-count">6 de 18</div>
+                            <div class="desc" id="agenda-progress-desc">atendimentos finalizados</div>
                         </div>
                     </div>
 
-                    <div class="alert-info-box">
+                    <div class="alert-info-box" id="agenda-progress-alert">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span>Três consultas ainda aguardam confirmação do paciente.</span>
+                        <span id="agenda-progress-alert-text">Três consultas ainda aguardam confirmação do paciente.</span>
                     </div>
                 </div>
 
@@ -492,12 +536,12 @@
                     <span class="panel-subtitle">FILTRAR POR MÉDICO</span>
                     <h3 class="panel-title">Profissionais Hoje</h3>
 
-                    <div class="doctor-list">
+                    <div class="doctor-list" id="agenda-doctor-filter-list">
                         <div class="doctor-item active" onclick="filterAgendaDoctor('todos', this)">
                             <div class="doc-profile">
                                 <div class="doc-name">Todos os Médicos</div>
                             </div>
-                            <span class="doc-count">18</span>
+                            <span class="doc-count" id="agenda-doc-count-todos">18</span>
                         </div>
 
                         <div class="doctor-item" onclick="filterAgendaDoctor('Dra. Marina Souza', this)">
@@ -508,7 +552,7 @@
                                     <div class="doc-spec">Fisioterapia</div>
                                 </div>
                             </div>
-                            <span class="doc-count">6</span>
+                            <span class="doc-count" id="agenda-doc-count-marina">6</span>
                         </div>
 
                         <div class="doctor-item" onclick="filterAgendaDoctor('Dr. Felipe Santos', this)">
@@ -519,7 +563,7 @@
                                     <div class="doc-spec">Odontologia</div>
                                 </div>
                             </div>
-                            <span class="doc-count">5</span>
+                            <span class="doc-count" id="agenda-doc-count-felipe">5</span>
                         </div>
 
                         <div class="doctor-item" onclick="filterAgendaDoctor('Dra. Beatriz Lima', this)">
@@ -530,7 +574,7 @@
                                     <div class="doc-spec">Psicologia</div>
                                 </div>
                             </div>
-                            <span class="doc-count">4</span>
+                            <span class="doc-count" id="agenda-doc-count-beatriz">4</span>
                         </div>
                     </div>
                 </div>
@@ -1383,9 +1427,14 @@
                                 </span>
                             </td>
                             <td>
-                                <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('Fernanda Lima', 'Dr. Carlos Eduardo', 'Cardiologia', '24/08/2026 - 14:00', 'Eletrocardiograma & Consulta', 'Paciente apresenta ritmo sinusal normal. Exames dentro dos parâmetros normais. Retorno em 1 ano.')">
-                                    <i class="fa-solid fa-file-lines"></i> Ver Prontuário
-                                </button>
+                                <div class="history-actions-cell">
+                                    <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('Fernanda Lima', 'Dr. Carlos Eduardo', 'Cardiologia', '24/08/2026 - 14:00', 'Eletrocardiograma & Consulta', 'Paciente apresenta ritmo sinusal normal. Exames dentro dos parâmetros normais. Retorno em 1 ano.')">
+                                        <i class="fa-solid fa-file-lines"></i> Ver Prontuário
+                                    </button>
+                                    <button type="button" class="btn-table-action revert-hover" style="width: auto; padding: 6px 10px; gap: 5px; color: #b45309; border-color: #fde68a;" title="Reverter Consulta" onclick="revertHistory(this)">
+                                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -1416,9 +1465,14 @@
                                 </span>
                             </td>
                             <td>
-                                <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('João Silva', 'Dra. Marina Souza', 'Fisioterapia', '24/08/2026 - 08:00', 'Sessão de Reabilitação Lombar', 'Quarta sessão realizada. Ganho de amplitude de movimento de 15%. Redução significativa do quadro álgico.')">
-                                    <i class="fa-solid fa-file-lines"></i> Ver Prontuário
-                                </button>
+                                <div class="history-actions-cell">
+                                    <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('João Silva', 'Dra. Marina Souza', 'Fisioterapia', '24/08/2026 - 08:00', 'Sessão de Reabilitação Lombar', 'Quarta sessão realizada. Ganho de amplitude de movimento de 15%. Redução significativa do quadro álgico.')">
+                                        <i class="fa-solid fa-file-lines"></i> Ver Prontuário
+                                    </button>
+                                    <button type="button" class="btn-table-action revert-hover" style="width: auto; padding: 6px 10px; gap: 5px; color: #b45309; border-color: #fde68a;" title="Reverter Consulta" onclick="revertHistory(this)">
+                                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -1449,9 +1503,14 @@
                                 </span>
                             </td>
                             <td>
-                                <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('Lucas Ribeiro', 'Dr. Felipe Santos', 'Odontologia', '23/08/2026 - 16:30', 'Limpeza & Profilaxia', 'Procedimento realizado sem intercorrências. Aplicação de flúor efetuada.')">
-                                    <i class="fa-solid fa-file-lines"></i> Ver Prontuário
-                                </button>
+                                <div class="history-actions-cell">
+                                    <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawer('Lucas Ribeiro', 'Dr. Felipe Santos', 'Odontologia', '23/08/2026 - 16:30', 'Limpeza & Profilaxia', 'Procedimento realizado sem intercorrências. Aplicação de flúor efetuada.')">
+                                        <i class="fa-solid fa-file-lines"></i> Ver Prontuário
+                                    </button>
+                                    <button type="button" class="btn-table-action revert-hover" style="width: auto; padding: 6px 10px; gap: 5px; color: #b45309; border-color: #fde68a;" title="Reverter Consulta" onclick="revertHistory(this)">
+                                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -1969,6 +2028,9 @@
         </div>
 
         <div style="margin-top: auto; display: flex; gap: 10px;">
+            <button type="button" class="btn-secondary" style="flex: 1; justify-content: center; color: #b45309; border-color: #fde68a;" onclick="revertCurrentDrawerHistory()">
+                <i class="fa-solid fa-rotate-left"></i> Reverter Consulta
+            </button>
             <button type="button" class="btn-primary" style="flex: 1; justify-content: center;" onclick="closeDrawer('drawer-historico'); showToast('Imprimindo prontuário clínico...');">
                 <i class="fa-solid fa-print"></i> Imprimir Prontuário
             </button>

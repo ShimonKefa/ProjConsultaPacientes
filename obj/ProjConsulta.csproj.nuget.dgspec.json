@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gabsm\\OneDrive\\Documentos\\Trabalhov3-main\\ProjConsulta.csproj": {}
+    "D:\\Trabalhov3-main\\ProjConsulta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gabsm\\OneDrive\\Documentos\\Trabalhov3-main\\ProjConsulta.csproj": {
+    "D:\\Trabalhov3-main\\ProjConsulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gabsm\\OneDrive\\Documentos\\Trabalhov3-main\\ProjConsulta.csproj",
+        "projectUniqueName": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
         "projectName": "ProjConsulta",
-        "projectPath": "C:\\Users\\gabsm\\OneDrive\\Documentos\\Trabalhov3-main\\ProjConsulta.csproj",
+        "projectPath": "D:\\Trabalhov3-main\\ProjConsulta.csproj",
         "packagesPath": "C:\\Users\\gabsm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gabsm\\OneDrive\\Documentos\\Trabalhov3-main\\obj\\",
+        "outputPath": "D:\\Trabalhov3-main\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gabsm\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -52,6 +52,50 @@ namespace ProjConsulta.Services
             _context.SaveChanges();
             return schedule;
         }
+        public Schedules RevertSchedule(Guid id, ScheduleStatus newStatus = ScheduleStatus.ATENDENDO)
+        {
+            var schedule = _context.schedules.FirstOrDefault(s => s.ID == id);
+            if (schedule == null)
+            {
+                throw new DomainException("Atendimento não encontrado");
+            }
+            schedule.scheduleStatus = newStatus;
+            _context.SaveChanges();
+            return schedule;
+        }
+        public List<ScheduleResponseDTO> GetAllSchedules()
+        {
+            return _context.schedules
+                .Select(s => new ScheduleResponseDTO
+                {
+                    ID = s.ID,
+                    ClientID = s.ClientID,
+                    DocID = s.DocID,
+                    consultingRooms = s.consultingRooms,
+                    EntranceDate = s.EntranceDate,
+                    ScheduleDate = s.ScheduleDate,
+                    scheduleStatus = s.scheduleStatus,
+                })
+                .ToList();
+        }
+        public List<ScheduleResponseDTO> GetSchedulesByRange(DateTime start, DateTime end)
+        {
+            var startDate = start.Date;
+            var endDate = end.Date.AddDays(1).AddTicks(-1);
+            return _context.schedules
+                .Where(s => s.ScheduleDate >= startDate && s.ScheduleDate <= endDate)
+                .Select(s => new ScheduleResponseDTO
+                {
+                    ID = s.ID,
+                    ClientID = s.ClientID,
+                    DocID = s.DocID,
+                    consultingRooms = s.consultingRooms,
+                    EntranceDate = s.EntranceDate,
+                    ScheduleDate = s.ScheduleDate,
+                    scheduleStatus = s.scheduleStatus,
+                })
+                .ToList();
+        }
         public List<ScheduleResponseDTO> GetSchedules_Pendente()
         {
             return _context

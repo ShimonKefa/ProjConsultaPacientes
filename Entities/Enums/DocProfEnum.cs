@@ -5,6 +5,9 @@ namespace ProjConsulta.Entities.Enums
         FISIOTERAPIA,
         ODONTOLOGIA,
         PSICOLOGIA,
+        CARDIOLOGIA,
+        PEDIATRIA,
+        ORTOPEDIA
     }
 }
 

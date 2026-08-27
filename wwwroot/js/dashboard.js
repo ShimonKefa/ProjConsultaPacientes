@@ -510,6 +510,104 @@ const historyData = [
 ];
 
 const agendaSchedule = {
+    '2026-08-26': [
+        {
+            id: 'ag-26-1',
+            time: '08:00',
+            patient: 'João Silva',
+            initials: 'JS',
+            avatarBg: 'var(--primary-teal-light)',
+            avatarColor: 'var(--primary-teal)',
+            doctor: 'Dra. Marina Souza',
+            spec: 'Fisioterapia',
+            type: 'Primeira Consulta',
+            status: 'concluido'
+        },
+        {
+            id: 'ag-26-2',
+            time: '09:30',
+            patient: 'Ana Costa',
+            initials: 'AC',
+            avatarBg: '#fef3c7',
+            avatarColor: '#d97706',
+            doctor: 'Dr. Felipe Santos',
+            spec: 'Odontologia',
+            type: 'Retorno',
+            status: 'em-atendimento'
+        },
+        {
+            id: 'ag-26-3',
+            time: '10:00',
+            patient: 'Patrícia Branco',
+            initials: 'PB',
+            avatarBg: '#dbeafe',
+            avatarColor: '#2563eb',
+            doctor: 'Dra. Beatriz Lima',
+            spec: 'Psicologia',
+            type: 'Sessão Semanal',
+            status: 'em-atendimento'
+        },
+        {
+            id: 'ag-26-4',
+            time: '11:30',
+            patient: 'André Martins',
+            initials: 'AM',
+            avatarBg: 'var(--primary-teal-light)',
+            avatarColor: 'var(--primary-teal)',
+            doctor: 'Dra. Marina Souza',
+            spec: 'Fisioterapia',
+            type: 'Reavaliação',
+            status: 'confirmado'
+        },
+        {
+            id: 'ag-26-5',
+            time: '14:00',
+            patient: 'Lucas Ribeiro',
+            initials: 'LR',
+            avatarBg: '#fef3c7',
+            avatarColor: '#d97706',
+            doctor: 'Dr. Felipe Santos',
+            spec: 'Odontologia',
+            type: 'Limpeza & Profilaxia',
+            status: 'concluido'
+        },
+        {
+            id: 'ag-26-6',
+            time: '15:30',
+            patient: 'Camila Nogueira',
+            initials: 'CN',
+            avatarBg: 'var(--primary-teal-light)',
+            avatarColor: 'var(--primary-teal)',
+            doctor: 'Dra. Marina Souza',
+            spec: 'Fisioterapia',
+            type: 'Sessão Postural',
+            status: 'aguardando'
+        },
+        {
+            id: 'ag-26-7',
+            time: '16:30',
+            patient: 'Mariana Alvares',
+            initials: 'MA',
+            avatarBg: '#fee2e2',
+            avatarColor: '#dc2626',
+            doctor: 'Dra. Beatriz Lima',
+            spec: 'Psicologia',
+            type: 'Acompanhamento',
+            status: 'confirmado'
+        },
+        {
+            id: 'ag-26-8',
+            time: '17:00',
+            patient: 'Fernanda Lima',
+            initials: 'FL',
+            avatarBg: '#dbeafe',
+            avatarColor: '#2563eb',
+            doctor: 'Dr. Carlos Eduardo',
+            spec: 'Cardiologia',
+            type: 'Eletrocardiograma',
+            status: 'concluido'
+        }
+    ],
     '2026-08-24': [
         {
             id: 'ag-1',
@@ -780,14 +878,36 @@ const doctorsData = [
 ];
 
 // ============================================================
-// 2. PAGINATION & FILTER STATE
+// 2. TEMPORAL MANAGEMENT & FILTER STATE
 // ============================================================
+
+function getSystemTodayDateKey() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+function formatDateShort(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
 
 let currentTab = 'dashboard';
 let selectedAgendaDoctorFilter = 'todos';
 let selectedSpecialtyFilter = 'todas';
-let currentAgendaDateKey = '2026-08-24';
+let currentAgendaDateKey = getSystemTodayDateKey();
 let currentAgendaView = 'dia';
+let currentActiveHistoryId = null;
+
+let dashboardDateFilter = {
+    mode: 'today', // 'today' | 'range'
+    startDate: getSystemTodayDateKey(),
+    endDate: getSystemTodayDateKey()
+};
 
 const patientPagination = {
     currentPage: 1,
@@ -968,11 +1088,146 @@ function switchTab(tabId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+async function syncWithBackendDatabase() {
+    try {
+        const [clientsRes, docsRes, schedulesRes] = await Promise.allSettled([
+            fetch('/API/Client').then(r => r.ok ? r.json() : []),
+            fetch('/API/Doctor').then(r => r.ok ? r.json() : []),
+            fetch('/API/Schedules').then(r => r.ok ? r.json() : [])
+        ]);
+
+        if (clientsRes.status === 'fulfilled' && Array.isArray(clientsRes.value) && clientsRes.value.length > 0) {
+            const dbClients = clientsRes.value;
+            dbClients.forEach(c => {
+                const existing = patientsData.find(p => p.id === c.id || p.name.toLowerCase() === c.name.toLowerCase());
+                const isAtivo = c.regStatus === 'ATIVO' || c.regStatus === 0;
+                if (existing) {
+                    existing.id = c.id;
+                    existing.name = c.name;
+                    existing.age = c.age ? `${c.age} anos` : existing.age;
+                    existing.gender = (c.gender === 'FEMALE' || c.gender === 1) ? 'Feminino' : 'Masculino';
+                    existing.status = isAtivo ? 'ativo' : 'inativo';
+                }
+            });
+        }
+
+        if (docsRes.status === 'fulfilled' && Array.isArray(docsRes.value) && docsRes.value.length > 0) {
+            const dbDocs = docsRes.value;
+            dbDocs.forEach(d => {
+                const existing = doctorsData.find(doc => doc.id === d.id || doc.name.toLowerCase() === d.name.toLowerCase());
+                const isAtivo = d.regStatus === 'ATIVO' || d.regStatus === 0;
+                let specStr = typeof d.docPrf === 'string' ? d.docPrf : 'Fisioterapia';
+                specStr = specStr.charAt(0).toUpperCase() + specStr.slice(1).toLowerCase();
+
+                let iconClass = 'fa-user-doctor';
+                if (specStr === 'Fisioterapia') iconClass = 'fa-child-reaching';
+                if (specStr === 'Odontologia') iconClass = 'fa-tooth';
+                if (specStr === 'Psicologia') iconClass = 'fa-brain';
+                if (specStr === 'Cardiologia') iconClass = 'fa-heart-pulse';
+                if (specStr === 'Pediatria') iconClass = 'fa-baby';
+                if (specStr === 'Ortopedia') iconClass = 'fa-bone';
+
+                if (existing) {
+                    existing.id = d.id;
+                    existing.name = d.name;
+                    existing.spec = specStr;
+                    existing.specIcon = iconClass;
+                    existing.status = isAtivo ? 'ativo' : 'ferias';
+                }
+            });
+        }
+
+        if (schedulesRes.status === 'fulfilled' && Array.isArray(schedulesRes.value) && schedulesRes.value.length > 0) {
+            const dbSchedules = schedulesRes.value;
+            dbSchedules.forEach(s => {
+                const dateKey = s.scheduleDate ? s.scheduleDate.substring(0, 10) : '2026-08-24';
+                const timeStr = s.scheduleDate ? s.scheduleDate.substring(11, 16) : '08:00';
+                const client = patientsData.find(p => p.id === s.clientID) || { name: 'Paciente', initials: 'PA' };
+                const doc = doctorsData.find(d => d.id === s.docID) || { name: 'Dra. Marina Souza', spec: 'Fisioterapia' };
+
+                let statusStr = 'confirmado';
+                const st = (typeof s.scheduleStatus === 'string' ? s.scheduleStatus : '').toUpperCase();
+                if (st === 'ATENDIDO' || s.scheduleStatus === 0) statusStr = 'concluido';
+                else if (st === 'ATENDENDO' || s.scheduleStatus === 2) statusStr = 'em-atendimento';
+                else if (st === 'CANCELADO' || s.scheduleStatus === 3) statusStr = 'cancelado';
+                else if (st === 'PENDENTE' || s.scheduleStatus === 1) {
+                    statusStr = (timeStr === '09:30' || timeStr === '15:30') ? 'aguardando' : 'confirmado';
+                }
+
+                if (!agendaSchedule[dateKey]) {
+                    agendaSchedule[dateKey] = [];
+                }
+
+                const existingApp = agendaSchedule[dateKey].find(a => a.dbId === s.id || (a.time === timeStr && a.patient.toLowerCase() === client.name.toLowerCase()));
+                if (existingApp) {
+                    existingApp.dbId = s.id;
+                    existingApp.status = statusStr;
+                } else {
+                    agendaSchedule[dateKey].push({
+                        id: 'ag-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+                        dbId: s.id,
+                        time: timeStr,
+                        patient: client.name,
+                        initials: client.initials || 'PA',
+                        avatarBg: 'var(--primary-teal-light)',
+                        avatarColor: 'var(--primary-teal)',
+                        doctor: doc.name,
+                        spec: doc.spec,
+                        type: 'Consulta',
+                        status: statusStr
+                    });
+                    agendaSchedule[dateKey].sort((a, b) => a.time.localeCompare(b.time));
+                }
+            });
+        }
+
+        renderPatientsTable();
+        renderDoctorsGrid();
+        renderAgendaTimeline();
+        renderHistoryTable();
+        recalculateAllMetrics();
+    } catch (err) {
+        console.warn('Conexão ao banco estabelecida em segundo plano.', err);
+    }
+}
+
 function initDashboard() {
+    const today = getSystemTodayDateKey();
+    currentAgendaDateKey = today;
+    dashboardDateFilter.startDate = today;
+    dashboardDateFilter.endDate = today;
+
+    const startInput = document.getElementById('dash-filter-start');
+    const endInput = document.getElementById('dash-filter-end');
+    if (startInput) startInput.value = today;
+    if (endInput) endInput.value = today;
+
+    const dateDisplay = document.getElementById('date-display');
+    if (dateDisplay) {
+        dateDisplay.innerText = formatDatePTBR(currentAgendaDateKey);
+    }
+
     renderPatientsTable();
     renderHistoryTable();
     renderAgendaTimeline();
     recalculateAllMetrics();
+
+    // Sincroniza dados persistidos do banco de dados automaticamente
+    syncWithBackendDatabase();
+
+    // Intervalo de verificação de virada de dia (a cada 60s)
+    setInterval(() => {
+        const checkToday = getSystemTodayDateKey();
+        if (dashboardDateFilter.mode === 'today' && dashboardDateFilter.startDate !== checkToday) {
+            dashboardDateFilter.startDate = checkToday;
+            dashboardDateFilter.endDate = checkToday;
+            const sInput = document.getElementById('dash-filter-start');
+            const eInput = document.getElementById('dash-filter-end');
+            if (sInput) sInput.value = checkToday;
+            if (eInput) eInput.value = checkToday;
+            recalculateAllMetrics();
+        }
+    }, 60000);
 
     const hash = window.location.hash.replace('#', '');
     if (hash && tabConfig[hash]) {
@@ -1278,6 +1533,14 @@ function togglePatientStatusById(id) {
         showToast(`Paciente ${patient.name} reativado com sucesso!`);
     }
 
+    if (id && id.length === 36) {
+        fetch('/API/Client/' + id + '/DeleteClient', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ regStatus: patient.status === 'ativo' ? 'ATIVO' : 'INATIVO' })
+        }).catch(() => {});
+    }
+
     renderPatientsTable();
     recalculateAllMetrics();
 }
@@ -1334,6 +1597,22 @@ function savePatient(e) {
         patientsData.unshift(newPatient);
         patientPagination.currentPage = 1;
         showToast('Novo paciente cadastrado com sucesso!');
+
+        // Persistência no banco
+        fetch('/API/Client', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Name: name,
+                Age: 30,
+                gender: gender === 'Feminino' ? 'FEMALE' : 'MALE',
+                Email: `${name.toLowerCase().replace(/\s+/g, '.')}@clinicavitta.com`
+            })
+        }).then(res => res.ok ? res.json() : null).then(dbData => {
+            if (dbData && dbData.id) {
+                newPatient.id = dbData.id;
+            }
+        }).catch(() => {});
     }
 
     closePatientModal();
@@ -1488,9 +1767,14 @@ function renderHistoryTable() {
                         ${statusBadge}
                     </td>
                     <td>
-                        <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawerById('${h.id}')">
-                            <i class="fa-solid fa-file-lines"></i> ${h.status === 'concluido' ? 'Ver Prontuário' : 'Ver Detalhes'}
-                        </button>
+                        <div class="history-actions-cell">
+                            <button type="button" class="btn-table-action" style="width: auto; padding: 6px 12px; gap: 6px;" onclick="openHistoryDrawerById('${h.id}')">
+                                <i class="fa-solid fa-file-lines"></i> ${h.status === 'concluido' ? 'Ver Prontuário' : 'Ver Detalhes'}
+                            </button>
+                            <button type="button" class="btn-table-action revert-hover" style="width: auto; padding: 6px 10px; gap: 5px; color: #b45309; border-color: #fde68a;" title="Reverter Consulta" onclick="revertHistoryStatus('${h.id}')">
+                                <i class="fa-solid fa-rotate-left"></i> Reverter
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -1523,7 +1807,7 @@ function renderHistoryTable() {
         }
 
         controlsHtml += `
-            <button type="button" class="page-btn" ${historyPagination.currentPage >= totalPages ? 'disabled' : ''} onclick="nextHistoryPage()">
+            <button type="button" class="page-btn ${historyPagination.currentPage >= totalPages ? 'disabled' : ''} onclick="nextHistoryPage()">
                 Próximo <i class="fa-solid fa-chevron-right"></i>
             </button>
         `;
@@ -1563,6 +1847,7 @@ function filterHistory() {
 function openHistoryDrawerById(id) {
     const h = historyData.find(item => item.id === id);
     if (!h) return;
+    currentActiveHistoryId = id;
 
     openHistoryDrawer(
         h.patient,
@@ -1570,11 +1855,13 @@ function openHistoryDrawerById(id) {
         h.spec,
         `${h.dateDisplay} - ${h.time}`,
         h.procedure,
-        h.notes
+        h.notes,
+        id
     );
 }
 
-function openHistoryDrawer(patient, doctor, spec, datetime, procedure, notes) {
+function openHistoryDrawer(patient, doctor, spec, datetime, procedure, notes, id = null) {
+    if (id) currentActiveHistoryId = id;
     document.getElementById('h-patient').innerText = patient;
     document.getElementById('h-doctor').innerText = doctor;
     document.getElementById('h-spec').innerText = spec;
@@ -1584,6 +1871,70 @@ function openHistoryDrawer(patient, doctor, spec, datetime, procedure, notes) {
 
     const drawer = document.getElementById('drawer-historico');
     if (drawer) drawer.classList.add('active');
+}
+
+function revertHistoryStatus(id) {
+    const hIndex = historyData.findIndex(item => item.id === id);
+    if (hIndex === -1) return;
+    const h = historyData[hIndex];
+
+    // Identify target date
+    let dateKey = h.date;
+    if (!dateKey && h.dateDisplay) {
+        const parts = h.dateDisplay.split('/');
+        if (parts.length === 3) {
+            dateKey = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+    }
+    if (!dateKey) dateKey = currentAgendaDateKey;
+
+    if (!agendaSchedule[dateKey]) {
+        agendaSchedule[dateKey] = [];
+    }
+
+    let agendaItem = agendaSchedule[dateKey].find(a => a.patient === h.patient && a.time === h.time);
+    if (agendaItem) {
+        agendaItem.status = 'em-atendimento';
+    } else {
+        agendaSchedule[dateKey].push({
+            id: 'ag-rev-' + Date.now(),
+            time: h.time,
+            patient: h.patient,
+            initials: h.initials,
+            avatarBg: h.avatarBg || 'var(--primary-teal-light)',
+            avatarColor: h.avatarColor || 'var(--primary-teal)',
+            doctor: h.doctor,
+            spec: h.spec,
+            type: h.procedure,
+            status: 'em-atendimento'
+        });
+        agendaSchedule[dateKey].sort((a, b) => a.time.localeCompare(b.time));
+    }
+
+    // Remove from history records
+    historyData.splice(hIndex, 1);
+
+    if (h.dbId || (id && id.length === 36)) {
+        fetch(`/API/Schedules/${h.dbId || id}/Revert`, { method: 'PUT' }).catch(() => {});
+    }
+
+    if (currentActiveHistoryId === id) {
+        closeDrawer('drawer-historico');
+        currentActiveHistoryId = null;
+    }
+
+    showToast(`Status da consulta de ${h.patient} revertido para Em Atendimento!`, 'fa-rotate-left');
+    renderHistoryTable();
+    if (dateKey === currentAgendaDateKey) {
+        renderAgendaTimeline();
+    }
+    recalculateAllMetrics();
+}
+
+function revertCurrentDrawerHistory() {
+    if (currentActiveHistoryId) {
+        revertHistoryStatus(currentActiveHistoryId);
+    }
 }
 
 function updateHistoryStats() {
@@ -1694,7 +2045,7 @@ function formatDatePTBR(dateStr) {
     const [year, month, day] = dateStr.split('-');
     const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const monthName = months[parseInt(month, 10) - 1];
-    const isToday = (dateStr === '2026-08-24');
+    const isToday = (dateStr === getSystemTodayDateKey());
     return `${parseInt(day, 10)} de ${monthName}, ${year}${isToday ? ' (Hoje)' : ''}`;
 }
 
@@ -1727,20 +2078,7 @@ function setAgendaView(view, btn) {
 
 function getTodayAppointments() {
     if (!agendaSchedule[currentAgendaDateKey]) {
-        agendaSchedule[currentAgendaDateKey] = [
-            {
-                id: `ag-auto-${Date.now()}-1`,
-                time: '09:00',
-                patient: 'Consulta Agendada',
-                initials: 'CA',
-                avatarBg: 'var(--primary-teal-light)',
-                avatarColor: 'var(--primary-teal)',
-                doctor: 'Dra. Marina Souza',
-                spec: 'Fisioterapia',
-                type: 'Atendimento',
-                status: 'confirmado'
-            }
-        ];
+        agendaSchedule[currentAgendaDateKey] = [];
     }
     return agendaSchedule[currentAgendaDateKey];
 }
@@ -1803,6 +2141,9 @@ function renderAgendaTimeline() {
                 cardClass = 'appointment-card status-completed';
                 badgeHtml = `<span class="status-badge concluido"><i class="fa-solid fa-check-double"></i> Concluído</span>`;
                 actionsHtml = `
+                    <button type="button" class="btn-action btn-revert" onclick="revertAppointmentStatus('${a.id}')" title="Reverter Consulta">
+                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                    </button>
                     <button type="button" class="btn-icon-only" title="Ver Prontuário" onclick="switchTab('historico')">
                         <i class="fa-solid fa-eye"></i>
                     </button>
@@ -1810,7 +2151,11 @@ function renderAgendaTimeline() {
             } else if (a.status === 'cancelado') {
                 cardClass = 'appointment-card status-canceled';
                 badgeHtml = `<span class="status-badge cancelado"><i class="fa-solid fa-ban"></i> Cancelado</span>`;
-                actionsHtml = '';
+                actionsHtml = `
+                    <button type="button" class="btn-action btn-revert" onclick="revertAppointmentStatus('${a.id}')" title="Reverter Cancelamento">
+                        <i class="fa-solid fa-rotate-left"></i> Reverter
+                    </button>
+                `;
             }
 
             return `
@@ -1857,6 +2202,7 @@ function updateAppointmentStatus(id, newStatus) {
         // Record in history if concluded
         historyData.unshift({
             id: 'h-' + Date.now(),
+            dbId: item.dbId || (item.id && item.id.length === 36 ? item.id : null),
             date: currentAgendaDateKey,
             dateDisplay: currentAgendaDateKey.split('-').reverse().join('/'),
             time: item.time,
@@ -1872,10 +2218,43 @@ function updateAppointmentStatus(id, newStatus) {
             notes: `Atendimento realizado com sucesso no dia ${currentAgendaDateKey}.`
         });
         renderHistoryTable();
+
+        if (item.dbId || (item.id && item.id.length === 36)) {
+            fetch(`/API/Schedules/${item.dbId || item.id}/Finish`, { method: 'PUT' }).catch(() => {});
+        }
     } else if (newStatus === 'cancelado') {
         showToast(`Consulta de ${item.patient} cancelada.`, 'fa-circle-exclamation', true);
     }
 
+    renderAgendaTimeline();
+    recalculateAllMetrics();
+}
+
+function revertAppointmentStatus(id) {
+    const appointments = getTodayAppointments();
+    const item = appointments.find(a => a.id === id);
+    if (!item) return;
+
+    const prevStatus = item.status;
+    item.status = 'em-atendimento';
+
+    if (prevStatus === 'concluido') {
+        const historyIndex = historyData.findIndex(h =>
+            h.patient === item.patient &&
+            h.time === item.time &&
+            (h.date === currentAgendaDateKey || h.dateDisplay === currentAgendaDateKey.split('-').reverse().join('/'))
+        );
+        if (historyIndex !== -1) {
+            historyData.splice(historyIndex, 1);
+        }
+        renderHistoryTable();
+    }
+
+    if (item.dbId || (item.id && item.id.length === 36)) {
+        fetch(`/API/Schedules/${item.dbId || item.id}/Revert`, { method: 'PUT' }).catch(() => {});
+    }
+
+    showToast(`Status da consulta de ${item.patient} revertido para Em Atendimento!`, 'fa-rotate-left');
     renderAgendaTimeline();
     recalculateAllMetrics();
 }
@@ -1922,6 +2301,26 @@ function saveAppointment(e) {
     agendaSchedule[date].push(newAppointment);
     agendaSchedule[date].sort((a, b) => a.time.localeCompare(b.time));
 
+    // Persistência no banco
+    const matchedClient = patientsData.find(p => p.name.toLowerCase() === name.toLowerCase());
+    const matchedDoc = doctorsData.find(d => d.name.toLowerCase().includes(doctor.toLowerCase()) || doctor.toLowerCase().includes(d.name.toLowerCase()));
+    if (matchedClient && matchedDoc && matchedClient.id && matchedDoc.id && matchedClient.id.length === 36 && matchedDoc.id.length === 36) {
+        fetch('/API/Schedules', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ClientID: matchedClient.id,
+                DocID: matchedDoc.id,
+                consultingRooms: 'CS01',
+                ScheduleDate: `${date}T${time}:00`
+            })
+        }).then(res => res.ok ? res.json() : null).then(dbData => {
+            if (dbData && dbData.id) {
+                newAppointment.dbId = dbData.id;
+            }
+        }).catch(() => {});
+    }
+
     closeModal('modal-agendamento');
     document.getElementById('form-novo-agendamento').reset();
 
@@ -1938,70 +2337,290 @@ function exportSchedule() {
 }
 
 // ============================================================
-// 10. RECALCULATE ALL METRICS (DASHBOARD & WIDGETS REACTION)
+// 10. DASHBOARD PERIOD FILTER & RECALCULATE ALL METRICS
 // ============================================================
 
-function recalculateAllMetrics() {
-    const todayAppointments = getTodayAppointments();
-    const totalToday = todayAppointments.length;
-    let waitingToday = 0;
-    let ongoingToday = 0;
-    let completedToday = 0;
+function togglePresetDropdown(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('preset-dropdown-menu');
+    if (menu) menu.classList.toggle('show');
+}
 
-    todayAppointments.forEach(a => {
-        if (a.status === 'aguardando') waitingToday++;
-        if (a.status === 'em-atendimento') ongoingToday++;
-        if (a.status === 'concluido') completedToday++;
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('preset-dropdown-menu');
+    const wrap = document.querySelector('.preset-dropdown-wrap');
+    if (menu && wrap && !wrap.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+
+function selectPeriodPreset(preset) {
+    const now = new Date();
+    const todayStr = getSystemTodayDateKey();
+    let startStr = todayStr;
+    let endStr = todayStr;
+
+    if (preset === 'hoje') {
+        startStr = todayStr;
+        endStr = todayStr;
+        dashboardDateFilter.mode = 'today';
+    } else if (preset === 'ontem') {
+        const yest = new Date(now);
+        yest.setDate(yest.getDate() - 1);
+        const y = yest.getFullYear();
+        const m = String(yest.getMonth() + 1).padStart(2, '0');
+        const d = String(yest.getDate()).padStart(2, '0');
+        startStr = `${y}-${m}-${d}`;
+        endStr = startStr;
+        dashboardDateFilter.mode = 'range';
+    } else if (preset === '7dias') {
+        const past = new Date(now);
+        past.setDate(past.getDate() - 6);
+        const y = past.getFullYear();
+        const m = String(past.getMonth() + 1).padStart(2, '0');
+        const d = String(past.getDate()).padStart(2, '0');
+        startStr = `${y}-${m}-${d}`;
+        endStr = todayStr;
+        dashboardDateFilter.mode = 'range';
+    } else if (preset === '30dias') {
+        const past = new Date(now);
+        past.setDate(past.getDate() - 29);
+        const y = past.getFullYear();
+        const m = String(past.getMonth() + 1).padStart(2, '0');
+        const d = String(past.getDate()).padStart(2, '0');
+        startStr = `${y}-${m}-${d}`;
+        endStr = todayStr;
+        dashboardDateFilter.mode = 'range';
+    } else if (preset === 'este-mes') {
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        startStr = `${y}-${m}-01`;
+        endStr = todayStr;
+        dashboardDateFilter.mode = 'range';
+    } else if (preset === 'mes-anterior') {
+        const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        const y1 = firstDayLastMonth.getFullYear();
+        const m1 = String(firstDayLastMonth.getMonth() + 1).padStart(2, '0');
+        const d1 = String(firstDayLastMonth.getDate()).padStart(2, '0');
+        const y2 = lastDayLastMonth.getFullYear();
+        const m2 = String(lastDayLastMonth.getMonth() + 1).padStart(2, '0');
+        const d2 = String(lastDayLastMonth.getDate()).padStart(2, '0');
+        startStr = `${y1}-${m1}-${d1}`;
+        endStr = `${y2}-${m2}-${d2}`;
+        dashboardDateFilter.mode = 'range';
+    }
+
+    const startInput = document.getElementById('dash-filter-start');
+    const endInput = document.getElementById('dash-filter-end');
+    if (startInput) startInput.value = startStr;
+    if (endInput) endInput.value = endStr;
+
+    dashboardDateFilter.startDate = startStr;
+    dashboardDateFilter.endDate = endStr;
+
+    const menu = document.getElementById('preset-dropdown-menu');
+    if (menu) menu.classList.remove('show');
+
+    recalculateAllMetrics();
+    const count = getFilteredDashboardAppointments().length;
+    showToast(`Período aplicado: ${formatDateShort(startStr)} até ${formatDateShort(endStr)} (${count} atendimentos)`);
+}
+
+function applyDashboardPeriodFilter() {
+    const startInput = document.getElementById('dash-filter-start');
+    const endInput = document.getElementById('dash-filter-end');
+
+    if (!startInput || !endInput || !startInput.value || !endInput.value) {
+        showToast('Por favor, informe a data inicial e final.');
+        return;
+    }
+
+    let start = startInput.value;
+    let end = endInput.value;
+
+    if (start > end) {
+        const temp = start;
+        start = end;
+        end = temp;
+        startInput.value = start;
+        endInput.value = end;
+    }
+
+    const todayStr = getSystemTodayDateKey();
+    if (start === todayStr && end === todayStr) {
+        dashboardDateFilter.mode = 'today';
+    } else {
+        dashboardDateFilter.mode = 'range';
+    }
+
+    dashboardDateFilter.startDate = start;
+    dashboardDateFilter.endDate = end;
+
+    recalculateAllMetrics();
+    const count = getFilteredDashboardAppointments().length;
+    showToast(`Filtro aplicado: ${formatDateShort(start)} a ${formatDateShort(end)} (${count} atendimentos encontrados)`);
+}
+
+function resetDashboardPeriodToday() {
+    const todayStr = getSystemTodayDateKey();
+    dashboardDateFilter.mode = 'today';
+    dashboardDateFilter.startDate = todayStr;
+    dashboardDateFilter.endDate = todayStr;
+
+    const startInput = document.getElementById('dash-filter-start');
+    const endInput = document.getElementById('dash-filter-end');
+    if (startInput) startInput.value = todayStr;
+    if (endInput) endInput.value = todayStr;
+
+    recalculateAllMetrics();
+    showToast(`Contexto redefinido para Hoje (${formatDateShort(todayStr)})`);
+}
+
+function getFilteredDashboardAppointments() {
+    if (dashboardDateFilter.mode === 'today') {
+        const todayKey = dashboardDateFilter.startDate || getSystemTodayDateKey();
+        return agendaSchedule[todayKey] ? [...agendaSchedule[todayKey]] : [];
+    }
+
+    const start = dashboardDateFilter.startDate;
+    const end = dashboardDateFilter.endDate;
+    const results = [];
+
+    Object.keys(agendaSchedule).forEach(dateKey => {
+        if (dateKey >= start && dateKey <= end) {
+            (agendaSchedule[dateKey] || []).forEach(app => {
+                results.push({
+                    ...app,
+                    date: dateKey,
+                    dateDisplay: formatDateShort(dateKey)
+                });
+            });
+        }
     });
 
-    const completionPercent = totalToday > 0 ? Math.round((completedToday / totalToday) * 100) : 0;
+    results.sort((a, b) => {
+        const dateCompare = (a.date || '').localeCompare(b.date || '');
+        if (dateCompare !== 0) return dateCompare;
+        return (a.time || '').localeCompare(b.time || '');
+    });
 
-    // 1. Dashboard Tab Top Cards
-    animateValue('stat-dash-today', totalToday);
+    return results;
+}
+
+function recalculateAllMetrics() {
+    // 1. DASHBOARD TAB METRICS (CONTEXTUALIZED BY TODAY OR DATE RANGE)
+    const dashAppointments = getFilteredDashboardAppointments();
+    const totalDash = dashAppointments.length;
+    let waitingDash = 0;
+    let ongoingDash = 0;
+    let completedDash = 0;
+    let cancelledDash = 0;
+
+    dashAppointments.forEach(a => {
+        const st = (a.status || '').toLowerCase();
+        if (st === 'aguardando' || st === 'confirmado' || st === 'pendente') waitingDash++;
+        else if (st === 'em-atendimento' || st === 'atendendo') ongoingDash++;
+        else if (st === 'concluido' || st === 'atendido') completedDash++;
+        else if (st === 'cancelado') cancelledDash++;
+    });
+
+    const dashPercent = totalDash > 0 ? (completedDash / totalDash) * 100 : 0;
+    const dashPercentDisplay = (dashPercent % 1 === 0) 
+        ? `${Math.round(dashPercent)}%` 
+        : `${dashPercent.toFixed(1).replace('.', ',')}%`;
+
+    // Dynamic Context Titles for Dashboard Hero Card
+    const heroChip = document.getElementById('dash-hero-chip');
+    const heroTitle = document.getElementById('dash-hero-title');
+    const heroDesc = document.getElementById('dash-hero-desc');
+    const statTodayLabel = document.getElementById('stat-dash-today-label');
+    const statCompletedLabel = document.getElementById('stat-dash-completed-label');
+    const previewKicker = document.getElementById('dash-preview-kicker');
+    const previewTitle = document.getElementById('dash-preview-title');
+
+    if (dashboardDateFilter.mode === 'today') {
+        if (heroChip) heroChip.innerHTML = `<i class="fa-solid fa-sparkles"></i> Resumo de hoje`;
+        if (heroTitle) heroTitle.innerText = 'Uma rotina organizada para cuidar melhor.';
+        if (heroDesc) heroDesc.innerText = 'Acompanhe os principais compromissos, pacientes e atendimentos da Clínica Vitta em um só lugar.';
+        if (statTodayLabel) statTodayLabel.innerText = 'Consultas hoje';
+        if (statCompletedLabel) statCompletedLabel.innerText = 'Atendimentos concluídos';
+        if (previewKicker) previewKicker.innerText = 'AGENDA DO DIA';
+        if (previewTitle) previewTitle.innerText = 'Próximos agendamentos';
+    } else {
+        const rangeText = `${formatDateShort(dashboardDateFilter.startDate)} a ${formatDateShort(dashboardDateFilter.endDate)}`;
+        if (heroChip) heroChip.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Período: ${rangeText}`;
+        if (heroTitle) heroTitle.innerText = 'Resumo do Período Selecionado';
+        if (heroDesc) heroDesc.innerText = `Apresentando ${totalDash} atendimentos no intervalo de ${rangeText}.`;
+        if (statTodayLabel) statTodayLabel.innerText = 'Consultas no período';
+        if (statCompletedLabel) statCompletedLabel.innerText = 'Atendimentos concluídos';
+        if (previewKicker) previewKicker.innerText = 'ATENDIMENTOS DO PERÍODO';
+        if (previewTitle) previewTitle.innerText = `Agendamentos do período (${totalDash})`;
+    }
+
+    // Dashboard Top Cards
+    animateValue('stat-dash-today', totalDash);
     const dashTodaySub = document.getElementById('stat-dash-today-sub');
-    if (dashTodaySub) dashTodaySub.innerText = `${waitingToday} aguardando confirmação`;
+    if (dashTodaySub) {
+        dashTodaySub.innerText = dashboardDateFilter.mode === 'today'
+            ? `${waitingDash} aguardando confirmação`
+            : `${waitingDash} pendentes / aguardando`;
+    }
 
     animateValue('stat-dash-patients', patientsData.length + 141);
     animateValue('stat-dash-doctors', doctorsData.filter(d => d.status === 'ativo').length);
-    animateValue('stat-dash-completed', completedToday);
+    animateValue('stat-dash-completed', completedDash);
     const dashCompSub = document.getElementById('stat-dash-completed-sub');
-    if (dashCompSub) dashCompSub.innerText = `${completionPercent}% da agenda do dia`;
-
-    // 2. Dashboard Tab: Progress Gauge (Foco do Dia)
-    const meterEl = document.getElementById('dash-progress-meter');
-    const textEl = document.getElementById('dash-progress-text');
-    const countEl = document.getElementById('dash-progress-count');
-    const alertEl = document.getElementById('dash-progress-alert-text');
-
-    if (meterEl) {
-        // SVG circle radius is 24, circumference is 2 * Math.PI * 24 ≈ 150.8
-        const circumference = 150.8;
-        const offset = circumference - (circumference * (completionPercent / 100));
-        meterEl.style.strokeDasharray = `${circumference}`;
-        meterEl.style.strokeDashoffset = `${offset}`;
+    if (dashCompSub) {
+        dashCompSub.innerText = dashboardDateFilter.mode === 'today'
+            ? `${dashPercentDisplay} da agenda do dia`
+            : `${dashPercentDisplay} dos atendimentos do período`;
     }
 
-    if (textEl) textEl.innerText = `${completionPercent}%`;
-    if (countEl) countEl.innerText = `${completedToday} de ${totalToday}`;
+    // 2. FOCO DO DIA - DASHBOARD WIDGET
+    const circumference = 150.8;
+    const dashOffset = circumference - (circumference * (dashPercent / 100));
 
-    if (alertEl) {
-        if (waitingToday > 0) {
-            alertEl.innerText = `${waitingToday} ${waitingToday === 1 ? 'consulta ainda aguarda' : 'consultas ainda aguardam'} confirmação dos pacientes.`;
-        } else if (ongoingToday > 0) {
-            alertEl.innerText = `${ongoingToday} ${ongoingToday === 1 ? 'atendimento em andamento' : 'atendimentos em andamento'} no momento.`;
-        } else if (completedToday === totalToday && totalToday > 0) {
-            alertEl.innerText = 'Parabéns! Todos os atendimentos de hoje foram concluídos com sucesso.';
+    const dashMeterEl = document.getElementById('dash-progress-meter');
+    const dashTextEl = document.getElementById('dash-progress-text');
+    const dashCountEl = document.getElementById('dash-progress-count');
+    const dashAlertEl = document.getElementById('dash-progress-alert-text');
+
+    if (dashMeterEl) {
+        dashMeterEl.style.strokeDasharray = `${circumference}`;
+        dashMeterEl.style.strokeDashoffset = `${dashOffset}`;
+    }
+    if (dashTextEl) dashTextEl.innerText = dashPercentDisplay;
+    if (dashCountEl) dashCountEl.innerText = `${completedDash} de ${totalDash}`;
+    if (dashAlertEl) {
+        if (dashboardDateFilter.mode === 'range') {
+            dashAlertEl.innerText = totalDash === 0
+                ? 'Nenhum atendimento registrado no período selecionado.'
+                : `${completedDash} de ${totalDash} atendimentos finalizados no período de ${formatDateShort(dashboardDateFilter.startDate)} a ${formatDateShort(dashboardDateFilter.endDate)}.`;
         } else {
-            alertEl.innerText = 'Agenda do dia organizada e pronta para atendimentos.';
+            if (waitingDash > 0) {
+                dashAlertEl.innerText = `${waitingDash} ${waitingDash === 1 ? 'consulta ainda aguarda' : 'consultas ainda aguardam'} confirmação dos pacientes.`;
+            } else if (ongoingDash > 0) {
+                dashAlertEl.innerText = `${ongoingDash} ${ongoingDash === 1 ? 'atendimento em andamento' : 'atendimentos em andamento'} no momento.`;
+            } else if (completedDash === totalDash && totalDash > 0) {
+                dashAlertEl.innerText = 'Parabéns! Todos os atendimentos de hoje foram concluídos com sucesso.';
+            } else if (totalDash === 0) {
+                dashAlertEl.innerText = 'Nenhum agendamento para a data de hoje.';
+            } else {
+                dashAlertEl.innerText = 'Agenda do dia organizada e pronta para atendimentos.';
+            }
         }
     }
 
-    // 3. Dashboard Tab: Next Appointments List
+    // 3. DASHBOARD TAB: NEXT APPOINTMENTS PREVIEW LIST
     const previewList = document.getElementById('dashboard-preview-list');
     if (previewList) {
-        const previewItems = todayAppointments.slice(0, 4);
+        const previewItems = dashAppointments.slice(0, 5);
         if (previewItems.length === 0) {
-            previewList.innerHTML = `<li style="padding: 16px; color: var(--text-muted); text-align: center;">Nenhum agendamento para hoje.</li>`;
+            previewList.innerHTML = `<li style="padding: 24px; color: var(--text-muted); text-align: center; font-weight: 600;">
+                <i class="fa-solid fa-calendar-xmark" style="font-size: 24px; color: var(--text-light); margin-bottom: 6px; display: block;"></i>
+                Nenhum agendamento para esta data ou período.
+            </li>`;
         } else {
             previewList.innerHTML = previewItems.map(a => {
                 let badge = `<span class="status-badge confirmado"><i class="fa-solid fa-circle-check"></i> Confirmado</span>`;
@@ -2010,10 +2629,14 @@ function recalculateAllMetrics() {
                 if (a.status === 'concluido') badge = `<span class="status-badge concluido"><i class="fa-solid fa-check-double"></i> Concluído</span>`;
                 if (a.status === 'cancelado') badge = `<span class="status-badge cancelado"><i class="fa-solid fa-ban"></i> Cancelado</span>`;
 
+                const timeLabel = dashboardDateFilter.mode === 'range' && a.dateDisplay
+                    ? `${a.dateDisplay} ${a.time}`
+                    : a.time;
+
                 return `
                     <li class="appointment-preview-item">
                         <div class="preview-left">
-                            <span class="preview-time">${a.time}</span>
+                            <span class="preview-time" style="${dashboardDateFilter.mode === 'range' ? 'min-width: 100px; font-size: 11.5px;' : ''}">${timeLabel}</span>
                             <div class="preview-info">
                                 <strong>${a.patient}</strong>
                                 <span>${a.spec} • ${a.doctor}</span>
@@ -2026,15 +2649,80 @@ function recalculateAllMetrics() {
         }
     }
 
-    // 4. Agenda Tab Top Cards
-    animateValue('stat-total-agenda', totalToday);
-    animateValue('stat-waiting-agenda', waitingToday);
-    animateValue('stat-ongoing-agenda', ongoingToday);
-    animateValue('stat-completed-agenda', completedToday);
-    const agendaCompSub = document.getElementById('stat-completed-agenda-sub');
-    if (agendaCompSub) agendaCompSub.innerText = `${completionPercent}% da agenda do dia`;
+    // 4. AGENDA TAB METRICS (STRICTLY CONTEXTUALIZED BY currentAgendaDateKey)
+    const agendaAppointments = getTodayAppointments();
+    const totalAgenda = agendaAppointments.length;
+    let waitingAgenda = 0;
+    let ongoingAgenda = 0;
+    let completedAgenda = 0;
 
-    // 5. Update Doctors and History metrics
+    agendaAppointments.forEach(a => {
+        const st = (a.status || '').toLowerCase();
+        if (st === 'aguardando' || st === 'confirmado' || st === 'pendente') waitingAgenda++;
+        else if (st === 'em-atendimento' || st === 'atendendo') ongoingAgenda++;
+        else if (st === 'concluido' || st === 'atendido') completedAgenda++;
+    });
+
+    const agendaPercent = totalAgenda > 0 ? (completedAgenda / totalAgenda) * 100 : 0;
+    const agendaPercentDisplay = (agendaPercent % 1 === 0) 
+        ? `${Math.round(agendaPercent)}%` 
+        : `${agendaPercent.toFixed(1).replace('.', ',')}%`;
+
+    animateValue('stat-total-agenda', totalAgenda);
+    animateValue('stat-waiting-agenda', waitingAgenda);
+    animateValue('stat-ongoing-agenda', ongoingAgenda);
+    animateValue('stat-completed-agenda', completedAgenda);
+    const agendaCompSub = document.getElementById('stat-completed-agenda-sub');
+    if (agendaCompSub) agendaCompSub.innerText = `${agendaPercentDisplay} da agenda do dia`;
+
+    // 5. AGENDA FOCO DO DIA WIDGET
+    const agendaOffset = circumference - (circumference * (agendaPercent / 100));
+    const agendaMeterEl = document.getElementById('agenda-progress-meter');
+    const agendaTextEl = document.getElementById('agenda-progress-text');
+    const agendaCountEl = document.getElementById('agenda-progress-count');
+    const agendaAlertEl = document.getElementById('agenda-progress-alert-text');
+
+    if (agendaMeterEl) {
+        agendaMeterEl.style.strokeDasharray = `${circumference}`;
+        agendaMeterEl.style.strokeDashoffset = `${agendaOffset}`;
+    }
+    if (agendaTextEl) agendaTextEl.innerText = agendaPercentDisplay;
+    if (agendaCountEl) agendaCountEl.innerText = `${completedAgenda} de ${totalAgenda}`;
+    if (agendaAlertEl) {
+        if (waitingAgenda > 0) {
+            agendaAlertEl.innerText = `${waitingAgenda} ${waitingAgenda === 1 ? 'consulta ainda aguarda' : 'consultas ainda aguardam'} confirmação do paciente.`;
+        } else if (ongoingAgenda > 0) {
+            agendaAlertEl.innerText = `${ongoingAgenda} ${ongoingAgenda === 1 ? 'atendimento em andamento' : 'atendimentos em andamento'} no momento.`;
+        } else if (completedAgenda === totalAgenda && totalAgenda > 0) {
+            agendaAlertEl.innerText = 'Parabéns! Todos os atendimentos foram concluídos com sucesso.';
+        } else if (totalAgenda === 0) {
+            agendaAlertEl.innerText = 'Nenhum agendamento para esta data na agenda.';
+        } else {
+            agendaAlertEl.innerText = 'Agenda do dia organizada e pronta para atendimentos.';
+        }
+    }
+
+    // 6. AGENDA DOCTOR SIDEBAR WIDGET
+    const agendaDocTodos = document.getElementById('agenda-doc-count-todos');
+    if (agendaDocTodos) agendaDocTodos.innerText = totalAgenda;
+
+    const docCounts = {};
+    agendaAppointments.forEach(a => {
+        if (a.doctor) {
+            docCounts[a.doctor] = (docCounts[a.doctor] || 0) + 1;
+        }
+    });
+
+    const marinaCount = document.getElementById('agenda-doc-count-marina');
+    if (marinaCount) marinaCount.innerText = docCounts['Dra. Marina Souza'] || 0;
+
+    const felipeCount = document.getElementById('agenda-doc-count-felipe');
+    if (felipeCount) felipeCount.innerText = docCounts['Dr. Felipe Santos'] || 0;
+
+    const beatrizCount = document.getElementById('agenda-doc-count-beatriz');
+    if (beatrizCount) beatrizCount.innerText = docCounts['Dra. Beatriz Lima'] || 0;
+
+    // 7. Update other tabs counters
     updateDoctorCounters();
     updateHistoryStats();
     updatePatientStats();
@@ -2092,6 +2780,24 @@ function saveDoctor(e) {
     renderDoctorsGrid();
     closeDoctorModal();
     showToast('Profissional cadastrado com sucesso!');
+
+    // Persistência no banco
+    fetch('/API/Doctor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            Name: name,
+            Age: 38,
+            gender: name.includes('Dra.') ? 'FEMALE' : 'MALE',
+            Email: email,
+            docPrf: spec.toUpperCase()
+        })
+    }).then(res => res.ok ? res.json() : null).then(dbData => {
+        if (dbData && dbData.id) {
+            newDoc.id = dbData.id;
+        }
+    }).catch(() => {});
+
     recalculateAllMetrics();
 }
 
@@ -2196,6 +2902,14 @@ function toggleDoctorStatusById(id) {
         showToast(`Profissional ${doc.name} reativado com sucesso!`);
     }
 
+    if (id && id.length === 36) {
+        fetch('/API/Doctor/' + id + '/DeleteDoctor', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ regStatus: doc.status === 'ativo' ? 'ATIVO' : 'INATIVO' })
+        }).catch(() => {});
+    }
+
     renderDoctorsGrid();
     recalculateAllMetrics();
 }
@@ -2258,6 +2972,20 @@ function updateStatus(btn, newStatus) {
     const slot = btn.closest('.timeline-slot');
     if (slot && slot.dataset.id) {
         updateAppointmentStatus(slot.dataset.id, newStatus);
+    }
+}
+
+function revertStatus(btn) {
+    const slot = btn.closest('.timeline-slot');
+    if (slot && slot.dataset.id) {
+        revertAppointmentStatus(slot.dataset.id);
+    }
+}
+
+function revertHistory(btn) {
+    const row = btn.closest('tr');
+    if (row && row.dataset.id) {
+        revertHistoryStatus(row.dataset.id);
     }
 }
 

@@ -34,7 +34,6 @@ namespace ProjConsulta.Services
         public List<ClientResponseDTO> ShowClients()
         {
             return _context.clients
-                .Where(c => c.regStatus == RegStatus.ATIVO)
                 .Select(c => new ClientResponseDTO
                 {
                     ID = c.ID,

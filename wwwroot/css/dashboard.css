@@ -171,6 +171,190 @@
     gap: 12px;
 }
 
+/* ============================================================
+   DATE PERIOD FILTER WIDGET (DASHBOARD TEMPORAL ENGINE)
+   ============================================================ */
+.date-period-filter-widget {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 4px 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.period-inputs-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.period-input-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+}
+
+.period-input-field:focus-within {
+    border-color: var(--primary-teal);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px var(--primary-teal-light);
+}
+
+.period-input-field .field-prefix {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.period-input-field .field-prefix i {
+    color: var(--primary-teal);
+    font-size: 12px;
+}
+
+.date-picker-custom {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+.period-separator {
+    color: var(--text-light);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-period-apply {
+    background: var(--primary-teal);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-period-apply:hover {
+    background: var(--primary-teal-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 138, 131, 0.25);
+}
+
+.btn-period-today {
+    background: #f1f5f9;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-period-today:hover {
+    background: var(--primary-teal-light);
+    color: var(--primary-teal);
+    border-color: var(--primary-teal-light);
+}
+
+.preset-dropdown-wrap {
+    position: relative;
+}
+
+.btn-period-preset {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-period-preset:hover {
+    background: #e2e8f0;
+    color: var(--text-main);
+}
+
+.preset-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 6px;
+    min-width: 170px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    z-index: 250;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.preset-dropdown-menu.show {
+    display: flex;
+    animation: fadeInDown 0.18s ease forwards;
+}
+
+.preset-dropdown-menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.15s ease;
+}
+
+.preset-dropdown-menu button i {
+    width: 16px;
+    text-align: center;
+    color: var(--primary-teal);
+}
+
+.preset-dropdown-menu button:hover {
+    background-color: var(--primary-teal-light);
+    color: var(--primary-teal);
+}
+
 /* Action Buttons */
 .btn-secondary {
     background-color: #ffffff;
@@ -361,8 +545,102 @@
 }
 
 /* ============================================================
-   TAB 1: DASHBOARD OVERVIEW
+   TAB 1: DASHBOARD OVERVIEW - UNIFIED HERO CONTAINER
    ============================================================ */
+.dashboard-hero-card {
+    grid-column: 1 / -1;
+    position: relative;
+    overflow: hidden;
+    padding: 28px 32px 30px;
+    border-radius: 20px;
+    color: #ffffff;
+    background: linear-gradient(120deg, #007a74 0%, var(--primary-teal) 60%, #10a89e 100%);
+    box-shadow: 0 10px 24px rgba(0, 138, 131, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 4px;
+}
+
+.dashboard-hero-card .hero-top {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.dashboard-hero-card .hero-top > div:first-child {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.16);
+    margin-bottom: 8px;
+}
+
+.dashboard-hero-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.dashboard-hero-card p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.88);
+    margin-top: 4px;
+}
+
+.welcome-illustration {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.welcome-illustration i {
+    font-size: 52px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-hero-card .hero-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+}
+
+.dashboard-hero-card .stat-card {
+    background-color: var(--card-bg, #ffffff);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.2s ease;
+}
+
+.dashboard-hero-card .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Fallback/Legacy support for other sections if needed */
 .welcome-card {
     grid-column: 1 / -1;
     display: flex;
@@ -384,17 +662,6 @@
     z-index: 2;
 }
 
-.welcome-chip {
-    display: inline-block;
-    padding: 4px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    background: rgba(255, 255, 255, 0.16);
-    margin-bottom: 8px;
-}
-
 .welcome-card h2 {
     font-size: 22px;
     font-weight: 800;
@@ -406,21 +673,6 @@
     font-size: 13px;
     color: rgba(255, 255, 255, 0.88);
     margin-top: 4px;
-}
-
-.welcome-illustration {
-    position: relative;
-    width: 90px;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.welcome-illustration i {
-    font-size: 52px;
-    color: rgba(255, 255, 255, 0.3);
 }
 
 .dashboard-lower-grid {
@@ -834,6 +1086,17 @@
 }
 .btn-cancel:hover { background-color: #fca5a5; }
 
+.btn-revert {
+    background-color: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+.btn-revert:hover {
+    background-color: #fde68a;
+    color: #92400e;
+    border-color: #fcd34d;
+}
+
 .btn-icon-only {
     background: none;
     border: 1px solid var(--border-color);
@@ -848,6 +1111,11 @@
     transition: all 0.2s ease;
 }
 .btn-icon-only:hover { background-color: #f8fafc; color: var(--text-main); }
+.btn-icon-only.warning-hover:hover {
+    background-color: #fef3c7;
+    color: #b45309;
+    border-color: #fcd34d;
+}
 
 /* Right Panel Sidebar Cards */
 .right-panel {
@@ -1154,6 +1422,19 @@
     background-color: #fee2e2;
     color: #dc2626;
     border-color: #fca5a5;
+}
+
+.btn-table-action.revert-hover:hover,
+.btn-table-action.warning-hover:hover {
+    background-color: #fef3c7;
+    color: #b45309;
+    border-color: #fcd34d;
+}
+
+.history-actions-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .pagination-bar {
@@ -1980,7 +2261,8 @@
    RESPONSIVE MEDIA QUERIES
    ============================================================ */
 @media (max-width: 1200px) {
-    .stats-banner {
+    .stats-banner,
+    .hero-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -2024,7 +2306,8 @@
 }
 
 @media (max-width: 640px) {
-    .stats-banner {
+    .stats-banner,
+    .hero-stats-grid {
         grid-template-columns: 1fr;
     }
 
