@@ -15,12 +15,16 @@ namespace ProjConsulta.Services
             _context = context;
             _send = send;
         }
-        public Schedules StartSchedule(ScheduleCreateDTO _schedules)
+        public async Task<Schedules> StartSchedule(ScheduleCreateDTO _schedules)
         {
+            var client = _schedules.client ?? await _context.clients.FindAsync(_schedules.ClientID);
+            var doctor = _schedules.doctor ?? await _context.doctors.FindAsync(_schedules.DocID);
             Schedules schedules = new Schedules
             {
                 ClientID = _schedules.ClientID,
+                client = client,
                 DocID = _schedules.DocID,
+                doctor = doctor,
                 consultingRooms = _schedules.consultingRooms,
                 ScheduleDate = _schedules.ScheduleDate,
             };
@@ -35,10 +39,17 @@ namespace ProjConsulta.Services
                     "Conflito de horário, possui algum atendimento agendado nesse horário"
                 );
             }
-
-            _send.ScheduleSendEmail(schedules);
             _context.schedules.Add(schedules);
             _context.SaveChanges();
+
+            try
+            {
+                await _send.ScheduleSendEmail(schedules);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
             return schedules;
         }
         public Schedules FinishSchedules(Guid id)

@@ -3,6 +3,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using ProjConsulta.Env;
 using ProjConsulta.Entities;
+using ProjConsulta.Data;
 using ProjConsulta.Entities.Exceptions;
 
 namespace ProjConsulta.Services
@@ -11,20 +12,29 @@ namespace ProjConsulta.Services
     {
         private readonly string _SMTP_SENHA;
         private readonly string _SMTP_EMAIL;
+        private readonly DBCOM _context;
         
 
-        public EmailSendService(EnvironmentService env)
+        public EmailSendService(EnvironmentService env  )
         {
+            
             _SMTP_SENHA = env.SenhaSMTP;
             _SMTP_EMAIL = env.EmailSender;
+
         }
-        public void ScheduleSendEmail(Schedules schedules)
+        public async Task ScheduleSendEmail(Schedules schedules)
         {
+            try
+            {
             var client = schedules.client;
             var doctor = schedules.doctor;
             if(client == null || string.IsNullOrEmpty(client.Email))
             {
                 throw new DomainException("usuário ou email não encontrado");
+            }
+            if (schedules.doctor == null)
+            {
+                throw new DomainException("Médico não informado para envio de e-mail.");
             }
             string MensagemCliente = @$"
             Olá {client.Name},
@@ -37,12 +47,14 @@ namespace ProjConsulta.Services
             message.Subject = "Agendamento de consulta";
             message.Body = new TextPart("Plain"){Text = MensagemCliente};
 
+            
+            
             SmtpClient smtp = new SmtpClient();
             try
             {
-                smtp.Connect("smtp@gmail.com", 465, true);
-                smtp.Authenticate(_SMTP_EMAIL, _SMTP_SENHA);
-                smtp.Send(message);
+                await smtp.ConnectAsync("smtp.gmail.com", 465, true);
+                await smtp.AuthenticateAsync(_SMTP_EMAIL, _SMTP_SENHA);
+                await smtp.SendAsync(message);
             }   
             catch(Exception sm)
             {
@@ -50,8 +62,14 @@ namespace ProjConsulta.Services
             }
             finally
             {
-                smtp.Disconnect(true);
+               smtp.Disconnect(true);
                 smtp.Dispose();
+            }
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
         }

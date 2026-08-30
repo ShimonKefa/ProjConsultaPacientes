@@ -71,7 +71,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
-        public IActionResult StartSchedule([FromBody] ScheduleCreateDTO scheduleCreateDTO)
+        public async Task<IActionResult> StartSchedule([FromBody] ScheduleCreateDTO scheduleCreateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace ProjConsulta.Controllers
 
             try
             {
-                var schedule = _schedule.StartSchedule(scheduleCreateDTO);
+                var schedule =  await _schedule.StartSchedule(scheduleCreateDTO);
                 return Ok(schedule);
             }
             catch (DomainException ex)

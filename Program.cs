@@ -10,9 +10,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ============================================================
-// SERVIÇOS
-// ============================================================
+
 
 // OpenAPI
 builder.Services.AddOpenApi();
@@ -44,9 +42,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-// ============================================================
-// AUTENTICAÇÃO
-// ============================================================
+
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -64,9 +60,6 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// ============================================================
-// CONTROLLERS + VIEWS
-// ============================================================
 
 builder.Services
     .AddControllersWithViews()
@@ -77,15 +70,10 @@ builder.Services
         );
     });
 
-// ============================================================
-// CONSTRUÇÃO DA APLICAÇÃO
-// ============================================================
 
 var app = builder.Build();
 
-// ============================================================
-// CONFIGURAÇÃO DO PIPELINE
-// ============================================================
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -100,9 +88,7 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ============================================================
-// INICIALIZAÇÃO DO BANCO E ADMIN
-// ============================================================
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -122,9 +108,7 @@ using (var scope = app.Services.CreateScope())
     );
 }
 
-// ============================================================
-// ROTAS
-// ============================================================
+
 
 // Rota padrão para MVC
 app.MapControllerRoute(
@@ -134,9 +118,5 @@ app.MapControllerRoute(
 
 // Mantém os Controllers/API com [Route]
 app.MapControllers();
-
-// ============================================================
-// EXECUÇÃO
-// ============================================================
-
+//app.UseSwagger();
 app.Run();

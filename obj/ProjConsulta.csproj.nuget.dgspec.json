@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Trabalhov3-main\\ProjConsulta.csproj": {}
+    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj": {}
   },
   "projects": {
-    "d:\\Trabalhov3-main\\ProjConsulta.csproj": {
+    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
+        "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
         "projectName": "ProjConsulta",
-        "projectPath": "d:\\Trabalhov3-main\\ProjConsulta.csproj",
-        "packagesPath": "C:\\Users\\gabsm\\.nuget\\packages\\",
-        "outputPath": "d:\\Trabalhov3-main\\obj\\",
+        "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+        "packagesPath": "C:\\Users\\Pedro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\gabsm\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -52,7 +54,7 @@
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.9, )"
+              "version": "[10.0.11, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -61,6 +63,10 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[10.0.0, )"
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[10.2.3, )"
             }
           },
           "imports": [
@@ -82,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
