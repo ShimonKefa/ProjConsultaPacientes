@@ -3,6 +3,7 @@ using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
 using ProjConsulta.Entities.Enums;
 using ProjConsulta.Entities.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjConsulta.Services
 {
@@ -10,11 +11,13 @@ namespace ProjConsulta.Services
     {
         private readonly DBCOM _context;
         private readonly EmailSendService _send;
+
         public ScheduleService(DBCOM context, EmailSendService send)
         {
             _context = context;
             _send = send;
         }
+
         public async Task<Schedules> StartSchedule(ScheduleCreateDTO _schedules)
         {
             var client = _schedules.client ?? await _context.clients.FindAsync(_schedules.ClientID);
@@ -28,15 +31,38 @@ namespace ProjConsulta.Services
                 consultingRooms = _schedules.consultingRooms,
                 ScheduleDate = _schedules.ScheduleDate,
             };
-            bool ConflitoHorario = _context.schedules.Any(s =>
-                s.DocID == schedules.DocID
-                && s.ScheduleDate == schedules.ScheduleDate
-                && s.scheduleStatus == ScheduleStatus.PENDENTE
+            var scheduleDate = new DateTime(
+                _schedules.ScheduleDate.Year,
+                _schedules.ScheduleDate.Month,
+                _schedules.ScheduleDate.Day,
+                _schedules.ScheduleDate.Hour,
+                _schedules.ScheduleDate.Minute,
+                0
             );
-            if (ConflitoHorario == true)
+
+            bool conflitoMedico = await _context.schedules.AnyAsync(s =>
+                s.DocID == _schedules.DocID
+                && s.ScheduleDate == scheduleDate
+                && s.scheduleStatus != ScheduleStatus.CANCELADO
+            );
+
+            if (conflitoMedico)
             {
                 throw new DomainException(
-                    "Conflito de horário, possui algum atendimento agendado nesse horário"
+                    "Conflito de horário: o médico já possui um atendimento agendado nesse horário."
+                );
+            }
+
+            bool conflitoPaciente = await _context.schedules.AnyAsync(s =>
+                s.ClientID == _schedules.ClientID
+                && s.ScheduleDate == scheduleDate
+                && s.scheduleStatus != ScheduleStatus.CANCELADO
+            );
+
+            if (conflitoPaciente)
+            {
+                throw new DomainException(
+                    "Conflito de horário: o paciente já possui um atendimento agendado nesse horário."
                 );
             }
             _context.schedules.Add(schedules);
@@ -46,12 +72,13 @@ namespace ProjConsulta.Services
             {
                 await _send.ScheduleSendEmail(schedules);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
             return schedules;
         }
+
         public Schedules FinishSchedules(Guid id)
         {
             var schedule = _context.schedules.FirstOrDefault(s => s.ID == id);
@@ -63,7 +90,11 @@ namespace ProjConsulta.Services
             _context.SaveChanges();
             return schedule;
         }
-        public Schedules RevertSchedule(Guid id, ScheduleStatus newStatus = ScheduleStatus.ATENDENDO)
+
+        public Schedules RevertSchedule(
+            Guid id,
+            ScheduleStatus newStatus = ScheduleStatus.ATENDENDO
+        )
         {
             var schedule = _context.schedules.FirstOrDefault(s => s.ID == id);
             if (schedule == null)
@@ -74,10 +105,11 @@ namespace ProjConsulta.Services
             _context.SaveChanges();
             return schedule;
         }
+
         public List<ScheduleResponseDTO> GetAllSchedules()
         {
-            return _context.schedules
-                .Select(s => new ScheduleResponseDTO
+            return _context
+                .schedules.Select(s => new ScheduleResponseDTO
                 {
                     ID = s.ID,
                     ClientID = s.ClientID,
@@ -89,12 +121,13 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public List<ScheduleResponseDTO> GetSchedulesByRange(DateTime start, DateTime end)
         {
             var startDate = start.Date;
             var endDate = end.Date.AddDays(1).AddTicks(-1);
-            return _context.schedules
-                .Where(s => s.ScheduleDate >= startDate && s.ScheduleDate <= endDate)
+            return _context
+                .schedules.Where(s => s.ScheduleDate >= startDate && s.ScheduleDate <= endDate)
                 .Select(s => new ScheduleResponseDTO
                 {
                     ID = s.ID,
@@ -107,6 +140,7 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public List<ScheduleResponseDTO> GetSchedules_Pendente()
         {
             return _context
@@ -123,6 +157,7 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public List<ScheduleResponseDTO> GetSchedules_Atendidos()
         {
             return _context
@@ -139,6 +174,7 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public List<ScheduleResponseDTO> GetSchedules_Cancelados()
         {
             return _context
@@ -155,6 +191,7 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public List<ScheduleResponseDTO> GetSchedules_Em_Atendimento()
         {
             return _context
@@ -171,23 +208,22 @@ namespace ProjConsulta.Services
                 })
                 .ToList();
         }
+
         public ScheduleResponseDTO? GetSchedulesByID(Guid id)
         {
-            return _context.schedules
-            .Where(s => s.ID == id)
-            .Select(s => new ScheduleResponseDTO
-            {
-                ID = s.ID,
-                ClientID = s.ClientID,
-                DocID = s.DocID,
-                consultingRooms = s.consultingRooms,
-                EntranceDate = s.EntranceDate,
-                ScheduleDate = s.ScheduleDate,
-                scheduleStatus = s.scheduleStatus,
-            })
-            .FirstOrDefault();
+            return _context
+                .schedules.Where(s => s.ID == id)
+                .Select(s => new ScheduleResponseDTO
+                {
+                    ID = s.ID,
+                    ClientID = s.ClientID,
+                    DocID = s.DocID,
+                    consultingRooms = s.consultingRooms,
+                    EntranceDate = s.EntranceDate,
+                    ScheduleDate = s.ScheduleDate,
+                    scheduleStatus = s.scheduleStatus,
+                })
+                .FirstOrDefault();
         }
-
-
     }
 }

@@ -826,11 +826,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+      "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj",
       "projectName": "ProjConsulta",
-      "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+      "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj",
       "packagesPath": "C:\\Users\\Pedro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\obj\\",
+      "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1330,7 +1330,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "O pacote 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
+      "message": "Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
       "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
       "targetGraphs": [
         "net10.0"

@@ -3,6 +3,7 @@ using ProjConsulta.Entities.DTO;
 using ProjConsulta.Entities.Enums;
 using ProjConsulta.Entities.Exceptions;
 using ProjConsulta.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjConsulta.Controllers
 {
@@ -18,6 +19,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAllSchedules()
         {
             var schedules = _schedule.GetAllSchedules();
@@ -25,6 +27,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("Range")]
+        [Authorize]
         public IActionResult GetSchedulesByRange([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
             var schedules = _schedule.GetSchedulesByRange(start, end);
@@ -32,6 +35,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("Pendentes")]
+        [Authorize]
         public IActionResult GetPendentes()
         {
             var schedules = _schedule.GetSchedules_Pendente();
@@ -39,6 +43,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("Atendidos")]
+        [Authorize]
         public IActionResult GetAtendidos()
         {
             var schedules = _schedule.GetSchedules_Atendidos();
@@ -46,6 +51,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("Cancelados")]
+        [Authorize]
         public IActionResult GetCancelados()
         {
             var schedules = _schedule.GetSchedules_Cancelados();
@@ -53,6 +59,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("EmAtendimento")]
+        [Authorize]
         public IActionResult GetEmAtendimento()
         {
             var schedules = _schedule.GetSchedules_Em_Atendimento();
@@ -60,6 +67,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("{ID}/GetScheduleByID")]
+        [Authorize]
         public IActionResult GetScheduleByID(Guid ID)
         {
             var schedule = _schedule.GetSchedulesByID(ID);
@@ -71,6 +79,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> StartSchedule([FromBody] ScheduleCreateDTO scheduleCreateDTO)
         {
             if (!ModelState.IsValid)
@@ -90,6 +99,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPut("{ID}/Finish")]
+        [Authorize]
         public IActionResult FinishSchedule(Guid ID)
         {
             try
@@ -104,6 +114,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPut("{ID}/Revert")]
+        [Authorize]
         public IActionResult RevertSchedule(Guid ID, [FromQuery] ScheduleStatus status = ScheduleStatus.ATENDENDO)
         {
             try

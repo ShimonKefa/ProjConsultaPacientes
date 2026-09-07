@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj": {}
+    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj": {
+    "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+        "projectUniqueName": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj",
         "projectName": "ProjConsulta",
-        "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\ProjConsulta.csproj",
+        "projectPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\ProjConsulta.csproj",
         "packagesPath": "C:\\Users\\Pedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\29_08\\ProjConsultaPacientes\\obj\\",
+        "outputPath": "C:\\Users\\Pedro\\Documents\\C#\\trabalho do bessa\\07_09\\ProjConsultaPacientes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",

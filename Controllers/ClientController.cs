@@ -6,6 +6,7 @@ using ProjConsulta.Data;
 using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
 using ProjConsulta.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjConsulta.Controllers
 {
@@ -25,6 +26,7 @@ namespace ProjConsulta.Controllers
 
         //lista todos os clientes
         [HttpGet]
+        [Authorize]
         public IActionResult GetClient()
         {
             if (!ModelState.IsValid)
@@ -37,6 +39,7 @@ namespace ProjConsulta.Controllers
 
         //lista o cliente pelo ID, na hora de consultar um ID único o sistema deve procurar pelo ID.
         [HttpGet("{ID}/GetClientByID")]
+        [Authorize]
         public IActionResult GetClientByID(Guid ID)
         {
             var client = _client.ShowClientbyID(ID);
@@ -48,6 +51,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         //Insere o cliente no banco, insert Simples
         public IActionResult InsertClient([FromBody] ClientCreateDTO clientcreateDTO)
         {
@@ -60,6 +64,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost("{ID}/DeleteClient")]
+        [Authorize]
         //update do registro pra delete
         public IActionResult DeleteClient([FromBody] ClientResponseDTO clientResponseDTO, Guid ID)
         {

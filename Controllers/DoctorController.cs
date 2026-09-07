@@ -6,6 +6,7 @@ using ProjConsulta.Data;
 using ProjConsulta.Entities;
 using ProjConsulta.Entities.DTO;
 using ProjConsulta.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjConsulta.Controllers
 {
@@ -22,6 +23,7 @@ namespace ProjConsulta.Controllers
 
         //lista todos os clientes
         [HttpGet]
+        [Authorize]
         public IActionResult GetDocs()
         {
             if (!ModelState.IsValid)
@@ -33,6 +35,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpGet("{ID}/GetDocsByID")]
+        [Authorize]
         public IActionResult GetDocsByID(Guid ID)
         {
             if (!ModelState.IsValid)
@@ -44,6 +47,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult InsertDoc([FromBody] DoctorCreateDTO doctorCreateDTO)
         {
             if (!ModelState.IsValid)
@@ -55,6 +59,7 @@ namespace ProjConsulta.Controllers
         }
 
         [HttpPost("{ID}/DeleteDoctor")]
+        [Authorize]
         //update do registro pra delete
         public IActionResult DeleteClient([FromBody] DoctorsResponseDTO doctorsResponse, Guid ID)
         {
